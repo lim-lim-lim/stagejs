@@ -456,15 +456,15 @@ stg.Rectangle = ( ()=>{
         }
 
         setTo( x, y, width, height ){
-            this.x = x;
-            this.y = y;
+            this.left = x;
+            this.top = y;
             this.width = width;
             this.height = height;
             return this;
         }
 
         clone(){
-            return new Rectangle( this.x, this.y, this.width, this.height );
+            return new Rectangle( this.left, this.top, this.width, this.height );
         }
 
         reset(){
@@ -473,7 +473,7 @@ stg.Rectangle = ( ()=>{
         }
 
         equals( rectangle ){
-            return this.x === rectangle.x && this.y === rectangle.y && this.width === rectangle.width && this.height === rectangle.height && this.left === rectangle.left && this.top === rectangle.top && this.right === rectangle.right && this.bottom === rectangle.bottom;
+            return this.left === rectangle.x && this.top === rectangle.y && this.width === rectangle.width && this.height === rectangle.height && this.left === rectangle.left && this.top === rectangle.top && this.right === rectangle.right && this.bottom === rectangle.bottom;
         }
 
         [ _updateWidth ](){
@@ -486,6 +486,7 @@ stg.Rectangle = ( ()=>{
 
         [ _updateRight ](){
             this[ _rightBottom ].x = this[ _rightTop ].x = this[ _leftTop ].x + this[ _width ];
+            console.log( this[ _leftTop ].x, this[ _width ], this[ _rightBottom ].x );
         }
 
         [ _updateBottom ](){

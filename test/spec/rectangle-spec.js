@@ -3,7 +3,7 @@ describe( '[ Rectangle Test ]' , ()=>{
     "use strict";
 
     beforeEach( ()=>{
-        const matrixPropList = [ 'x', 'y', 'width', 'height' ];
+        const matrixPropList = [ 'left', 'top', 'width', 'height' ];
         jasmine.addMatchers({
             toEqualRectangle:()=>{
                 return{
