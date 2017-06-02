@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Graphics</title>
+</head>
+<body>
+<canvas id="stage" width="500" height="300"></canvas>
+<script src="../dist/stage.js"></script>
+<script>
+    const stage = new stg.Stage( 'stage' );
+    const graphics = new stg.Graphics();
+    graphics.strokeStyle = '#F08';
+    graphics.beginPath();
+    graphics.moveTo( 0, 0 );
+    graphics.lineTo( 10, 10 );
+    graphics.lineTo( 20, 0 );
+    graphics.lineTo( 30, 10 );
+    graphics.lineTo( 40, 0 );
+    graphics.lineTo( 50, 10 );
+    graphics.lineTo( 60, 0 );
+    graphics.stroke();
+
+    graphics.strokeStyle = '#903';
+    graphics.beginPath();
+    graphics.moveTo( 0, 10 );
+    graphics.lineTo( 10, 0 );
+    graphics.lineTo( 20, 10 );
+    graphics.lineTo( 30, 0 );
+    graphics.lineTo( 40, 10 );
+    graphics.lineTo( 50, 0 );
+    graphics.lineTo( 60, 10 );
+    graphics.stroke();
+
+    const shape1 = new stg.Shape( graphics );
+    shape1.x = 10;
+    shape1.y = 10;
+    shape1.rotate = 0.1;
+
+    const shape2 = new stg.Shape( graphics );
+    shape2.x = 10;
+    shape2.y = 40;
+    shape2.scaleX = 2;
+    shape2.rotate = 0.3;
+
+    const shape3 = new stg.Shape( graphics );
+    shape3.x = 10;
+    shape3.y = 70;
+    shape3.scaleX = 3;
+    shape3.rotate = 0.5;
+
+    stage.addChild( shape1 );
+    stage.addChild( shape2 );
+    stage.addChild( shape3 );
+    stage.update();
+</script>
+</body>
+</html>
