@@ -35,7 +35,7 @@ stg.EventDispatcher = ( ()=>{
         trigger( type, data  ){
             if( this[ _eventMap ][ type ] ){
                 for( let item of this[ _eventMap ][ type ] ){
-                    item.call( this, stg.Event( type ), data );
+                    item.call( this, new stg.Event( type ), data );
                 }
             }
         }

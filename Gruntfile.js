@@ -15,6 +15,7 @@ module.exports = function(grunt) {
             src:[
                     'src/index.js',
                     'src/event/*.js',
+                    'src/util/*.js',
                     'src/geom/*.js',
                     'src/display/display.js',
                     'src/display/display-container.js',
