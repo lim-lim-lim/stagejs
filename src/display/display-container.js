@@ -43,6 +43,7 @@ stg.DisplayContainer = ( ()=>{
 
         removeChildAt( index ){
             this[ _childList].splice( index, 1 );
+            this.stage.changed = true;
             return this;
         }
 
@@ -53,9 +54,6 @@ stg.DisplayContainer = ( ()=>{
         updateDisplay(){
             for( let child of this[ _childList ] ) {
                 if (child.visible) {
-                    if (!child instanceof stg.Shape && child.width === 0 && child.height === 0) {
-                        return;
-                    }
                     child.update();
                 }
             }

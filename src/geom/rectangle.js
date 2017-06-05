@@ -189,7 +189,6 @@ stg.Rectangle = ( ()=>{
 
         [ _updateRight ](){
             this[ _rightBottom ].x = this[ _rightTop ].x = this[ _leftTop ].x + this[ _width ];
-            console.log( this[ _leftTop ].x, this[ _width ], this[ _rightBottom ].x );
         }
 
         [ _updateBottom ](){

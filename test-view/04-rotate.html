@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rotate</title>
+    <style>
+        #container{
+            width:650px;
+        }
+
+        #stage{
+            float: left;
+            display: inline-block;
+            border:  1px solid gray;
+        }
+
+        .options{
+            float: left;
+            display: inline-block;
+            border:  1px solid gray;
+            width: 300px;
+            height:300px;
+            font-size: 12px;
+        }
+
+        .options .options_container{
+            padding: 10px;
+        }
+
+        .options_container div{
+            margin-bottom: 5px;
+            height: 25px;
+        }
+
+        .options label{
+            width: 100px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Rotate</h1>
+
+<div id="container">
+    <canvas id="stage" width="300" height="300"></canvas>
+    <div class="options">
+        <div class="options_container">
+            <div>
+                <label for="center_x">Center X</label>
+                <input type="range" id="center_x" name="center_x" min="0" max="80" value="0">
+            </div>
+            <div>
+                <label for="center_y">Center Y</label>
+                <input type="range" id="center_y" name="center_y" min="0" max="80" value="0">
+            </div>
+            <div>
+                <label for="translate_x">Translate X</label>
+                <input type="range" id="translate_x" name="translate_x" min="0" max="300" value="50">
+            </div>
+            <div>
+                <label for="translate_y">Translate Y</label>
+                <input type="range" id="translate_y" name="translate_y" min="0" max="300" value="50">
+            </div>
+            <div>
+                <label for="rotate">Rotate</label>
+                <input type="range" id="rotate" name="rotate" min="0" max="6.3" value="0" step="0.1">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../dist/stage.js"></script>
+<script>
+    const stage = new stg.Stage( 'stage' );
+    const rectGraphics = new stg.Graphics();
+    const pointGraphics = new stg.Graphics();
+
+
+    rectGraphics.lineWidth = 5;
+    rectGraphics.strokeStyle = '#903';
+    rectGraphics.fillStyle = '#F08';
+
+    rectGraphics.fillRect( 0, 0, 80, 80 );
+    rectGraphics.strokeRect( 0, 0, 80, 80);
+
+    rectGraphics.fillStyle = '#903';
+    rectGraphics.fillRect( 15, 25, 15, 5 );
+    rectGraphics.fillRect( 50, 25, 15, 5 );
+    rectGraphics.fillRect( 25, 55, 30, 5 );
+
+    pointGraphics.lineWidth = 5;
+    pointGraphics.fillStyle = '#3F0';
+    pointGraphics.strokeStyle = '#293';
+    pointGraphics.arc( 0, 0, 5, 0, Math.PI*2, false );
+    pointGraphics.fill();
+    pointGraphics.stroke();
+
+    const rect = new stg.Shape( rectGraphics );
+    const point = new stg.Shape( pointGraphics );
+    rect.x = 50;
+    rect.y = 50;
+    point.x = rect.x + rect.centerX;
+    point.y = rect.y + rect.centerY;
+
+    stage.addChild( rect );
+    stage.addChild( point );
+    stage.update();
+
+    document.getElementById( 'center_x' ).addEventListener( 'input', ( event )=>{
+        rect.centerX = parseFloat( event.target.value );
+        point.x = rect.x + rect.centerX;
+        stage.update();
+    });
+
+    document.getElementById( 'center_y' ).addEventListener( 'input', ( event )=>{
+        rect.centerY = parseFloat( event.target.value );
+        point.y = rect.y + rect.centerY;
+        stage.update();
+    });
+
+    document.getElementById( 'translate_x' ).addEventListener( 'input', ( event )=>{
+        rect.x = parseFloat( event.target.value );
+        point.x = rect.x + rect.centerX;
+        stage.update();
+    });
+
+    document.getElementById( 'translate_y' ).addEventListener( 'input', ( event )=>{
+        rect.y = parseFloat( event.target.value );
+        point.y = rect.y + rect.centerY;
+        stage.update();
+    });
+
+    document.getElementById( 'rotate' ).addEventListener( 'input', ( event )=>{
+        rect.rotate = parseFloat( event.target.value );
+        stage.update();
+    });
+
+</script>
+</body>
+</html>

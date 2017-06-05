@@ -139,26 +139,31 @@ stg.Display = ( ()=>{
         }
 
         set x( value ){
+            if( typeof value !== 'number' ){ throw  new Error( 'Display 객체의 x 속성은 반드시 number 타입이어야 합니다.'); }
             if( this[ _bounds ].left === value ){ return; }
             this[ _bounds ].left = value;
             this[ _changedDisplay ]();
         }
 
         set y( value ){
+            if( typeof value !== 'number' ){ throw  new Error( 'Display 객체의 y 속성은 반드시 number 타입이어야 합니다.'); }
             if( this[ _bounds ].top === value ){ return; }
             this[ _bounds ].top = value;
             this[ _changedDisplay ]();
         }
 
         set centerX( value ){
+            if( typeof value !== 'number' ){ throw  new Error( 'Display 객체의 centerX 속성은 반드시 number 타입이어야 합니다.'); }
             this[ _centerX ] = value;
         }
 
         set centerY( value ){
+            if( typeof value !== 'number' ){ throw  new Error( 'Display 객체의 centerY 속성은 반드시 number 타입이어야 합니다.'); }
             this[ _centerY ] = value;
         }
 
         set width( value ){
+            if( typeof value !== 'number' ){ throw  new Error( 'Display 객체의 width 속성은 반드시 number 타입이어야 합니다.'); }
             if( this[ _width ] === value ){ return; }
             this[ _width ] = value;
             this[ _bounds ].width = value * this[ _scaleX ];
@@ -166,6 +171,7 @@ stg.Display = ( ()=>{
         }
 
         set height( value ){
+            if( typeof value !== 'number' ){ throw  new Error( 'Display 객체의 height 속성은 반드시 number 타입이어야 합니다.'); }
             if( this.height === value ){ return; }
             this[ _height ] = value;
             this[ _bounds ].height = value * this[ _scaleY ];
@@ -173,12 +179,14 @@ stg.Display = ( ()=>{
         }
 
         set rotate( value ){
+            if( typeof value !== 'number' ){ throw  new Error( 'Display 객체의 rotate 속성은 반드시 number 타입이어야 합니다.'); }
             if( this[ _rotate ] === value ){ return; }
             this[ _rotate ] = value;
             this[ _changedDisplay ]();
         }
 
         set scaleX( value ){
+            if( typeof value !== 'number' ){ throw  new Error( 'Display 객체의 scaleX 속성은 반드시 number 타입이어야 합니다.'); }
             if( this[ _scaleX ] === value ){ return; }
             this[ _scaleX ] = value;
             this[ _bounds ].width = this[ _width ] * value;
@@ -186,6 +194,7 @@ stg.Display = ( ()=>{
         }
 
         set scaleY( value ){
+            if( typeof value !== 'number' ){ throw  new Error( 'Display 객체의 scaleY 속성은 반드시 number 타입이어야 합니다.'); }
             if( this[ _scaleY ] === value ){ return; }
             this[ _scaleY ] = value;
             this[ _bounds ].height = this[ _height ] * value;
@@ -193,12 +202,14 @@ stg.Display = ( ()=>{
         }
 
         set skewX( value ){
+            if( typeof value !== 'number' ){ throw  new Error( 'Display 객체의 skweX 속성은 반드시 number 타입이어야 합니다.'); }
             if( this[ _skewX ] === value ){ return; }
             this[ _skewX ] = value;
             this[ _changedDisplay ]();
         }
 
         set skewY( value ){
+            if( typeof value !== 'number' ){ throw  new Error( 'Display 객체의 skweY 속성은 반드시 number 타입이어야 합니다.'); }
             if( this[ _skewY ] === value ){ return; }
             this[ _skewY ] = value;
             this[ _changedDisplay ]();

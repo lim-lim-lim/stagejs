@@ -10,48 +10,69 @@
 <script>
     const stage = new stg.Stage( 'stage' );
     const graphics = new stg.Graphics();
-    graphics.strokeStyle = '#F08';
+    const PI2 = Math.PI*2;
+    graphics.lineWidth = 5;
+
+    graphics.strokeStyle = '#903';
+    graphics.fillStyle = '#F08';
+
     graphics.beginPath();
-    graphics.moveTo( 0, 0 );
-    graphics.lineTo( 10, 10 );
-    graphics.lineTo( 20, 0 );
-    graphics.lineTo( 30, 10 );
-    graphics.lineTo( 40, 0 );
-    graphics.lineTo( 50, 10 );
-    graphics.lineTo( 60, 0 );
+    graphics.arc( 0, 0, 50, 0, PI2, false );
     graphics.stroke();
+    graphics.fill();
 
     graphics.strokeStyle = '#903';
     graphics.beginPath();
-    graphics.moveTo( 0, 10 );
-    graphics.lineTo( 10, 0 );
-    graphics.lineTo( 20, 10 );
-    graphics.lineTo( 30, 0 );
-    graphics.lineTo( 40, 10 );
-    graphics.lineTo( 50, 0 );
-    graphics.lineTo( 60, 10 );
+    graphics.arc( -20, -25, 8, Math.PI, 0, false );
     graphics.stroke();
 
+    graphics.beginPath();
+    graphics.arc( 20, -25, 8, Math.PI, 0, false );
+    graphics.stroke();
+
+    graphics.beginPath();
+    graphics.arc( 0, 15, 20, Math.PI, 0, true );
+    graphics.stroke();
+
+    graphics.fillStyle = '#903';
+    graphics.beginPath();
+    graphics.arc( -20, -10, 8, 0, PI2, false );
+    graphics.arc( 20, -10, 8, 0, PI2, false );
+    graphics.fill();
+
+    graphics.fillStyle = '#FFF';
+    graphics.beginPath();
+    graphics.arc( -22, -12, 3, 0, PI2, false );
+    graphics.arc( 18, -12, 3, 0, PI2, false );
+    graphics.fill();
+
     const shape1 = new stg.Shape( graphics );
-    shape1.x = 10;
-    shape1.y = 10;
-    shape1.rotate = 0.1;
+    shape1.x = 60;
+    shape1.y = 60;
 
     const shape2 = new stg.Shape( graphics );
-    shape2.x = 10;
-    shape2.y = 40;
-    shape2.scaleX = 2;
+    shape2.x = 200;
+    shape2.y = 100;
+    shape2.scaleX = 1.5;
     shape2.rotate = 0.3;
 
     const shape3 = new stg.Shape( graphics );
-    shape3.x = 10;
-    shape3.y = 70;
-    shape3.scaleX = 3;
-    shape3.rotate = 0.5;
+    shape3.x = 350;
+    shape3.y = 150;
+    shape3.scaleY = 1.5;
+    shape3.rotate = -0.5;
+
+    const shape4 = new stg.Shape( graphics );
+    shape4.x = 60;
+    shape4.y = 150;
+    shape4.scaleX = 0.3;
+    shape4.scaleY = 0.3;
+    shape4.rotate = Math.PI;
 
     stage.addChild( shape1 );
     stage.addChild( shape2 );
     stage.addChild( shape3 );
+    stage.addChild( shape4 );
     stage.update();
 </script>
 </body>
