@@ -437,6 +437,7 @@ stg.Rectangle = ( ()=>{
             this[ _updateBottom ]();
         }
 
+        //TODO left right top bottom 삭제 하고 x, y로 수정 할 것.
         set left( value ){
             this.leftTop.x = value;
             this.leftBottom.x = value;
@@ -805,7 +806,7 @@ stg.Display = ( ()=>{
         update(){
             this.stage.context.save();
             this.updateTransformation();
-            this.updateDisplay();
+            this.updateDisplay( this.stage.context );
             this.stage.context.restore();
         }
 
@@ -890,7 +891,7 @@ stg.DisplayContainer = ( ()=>{
             return this[ _childList][ index ];
         }
 
-        updateDisplay(){
+        updateDisplay( context ){
             for( let child of this[ _childList ] ) {
                 if (child.visible) {
                     child.update();
@@ -1191,8 +1192,7 @@ stg.Shape = ( ()=>{
             this[ _graphics ] = value;
         }
 
-        updateDisplay(){
-            const context = this.stage.context;
+        updateDisplay( context ){
             for( let command of this[ _graphics ].commandList ){
                 context.fillStyle = command.fillStyle;
                 context.strokeStyle = command.strokeStyle;
@@ -1210,4 +1210,163 @@ stg.Shape = ( ()=>{
     }
 
     return Shape;
+})();
+
+
+stg.SpriteSheet = (()=>{
+
+	const _image = Symbol( 'image' );
+	const _cellWidth = Symbol( 'cellWidth' );
+	const _cellHeight = Symbol( 'cellHeight' );
+	const _frame = Symbol( 'frame' );
+	const _frameIndex = Symbol( 'frameIndex' );
+	const _currentBounds = Symbol( 'currentBounds' );
+	const _updateBounds = Symbol( 'updateBounds' );
+	const _loop = Symbol( 'loop' );
+
+	class SpriteSheet extends stg.EventDispatcher{
+
+		constructor( img, cellWidth, cellHeight, frame, loop = true ){
+			super();
+
+			if( img instanceof HTMLImageElement ){
+				this[ _image ] = img;
+				this.trigger( SpriteSheet.LOAD );
+			}else if( typeof img === 'string' ){
+				this[ _image ] = new Image();
+				this[ _image ].src = img;
+				this[ _image ].addEventListener( 'load', ()=>this.trigger( SpriteSheet.LOAD ) );
+			}
+
+			this[ _cellWidth ] = cellWidth;
+			this[ _cellHeight ] = cellHeight;
+			this[ _frame ] = frame;
+			this[ _frameIndex ] = -1;
+			this[ _currentBounds ] = { x:0, y:0, width:cellWidth, height:cellHeight };
+			this[ _loop ] = loop;
+		}
+
+		get image(){
+		    return this[ _image ];
+        }
+
+		get cellWidth(){
+			return this[ _cellWidth ];
+		}
+
+		get cellHeight(){
+			return this[ _cellHeight ];
+		}
+
+		get currentBounds(){
+		    return this[ _currentBounds ];
+        }
+
+		next(){
+		    if( this[ _frameIndex ]+1 <= this[ _frame ].length-1 ){
+		        this[ _frameIndex ]++;
+            }else{
+		        if( this[ _loop ] ){
+		            this[ _frameIndex ] = 0;
+                }
+            }
+
+            this[ _updateBounds ]();
+        }
+
+        prev(){
+            if( this[ _frameIndex ]-1 > 0 ){
+		        this[ _frameIndex ]--;
+            }else{
+		        if( this[ _loop ] ){
+		            this[ _frameIndex ] = this[ _frame ].length-1;
+                }
+            }
+
+            this[ _updateBounds ]();
+        }
+
+        [ _updateBounds ](){
+            const currentFrame = this[ _frame ][ this[ _frameIndex ] ];
+            this[ _currentBounds ].x = currentFrame[ 0 ] * this[ _cellWidth ];
+		    this[ _currentBounds ].y = currentFrame[ 1 ] * this[ _cellHeight ];
+        }
+	}
+
+	SpriteSheet.LOAD = 'load';
+	return SpriteSheet;
+})();
+
+
+stg.Sprite = (()=>{
+
+	const _spriteSheet = Symbol( 'spriteSheet' );
+	const _fps = Symbol( 'fps' );
+	const _ticker = Symbol( 'ticker' );
+	const _tickerHandler = Symbol( 'tickerHandler' );
+
+	class Sprite extends stg.Display{
+
+		constructor( spriteSheet, fps=10 ){
+			super();
+			this.spriteSheet = spriteSheet;
+			this[ _fps ] = fps;
+			this[ _ticker ] = new stg.Ticker( fps );
+			this[ _ticker ].on( stg.Ticker.TICK, ()=>this[ _tickerHandler ]() );
+		}
+
+        get spriteSheet(){
+            return this[ _spriteSheet ];
+        }
+
+		get fps(){
+			return this[ _fps ];
+		}
+
+		set spriteSheet( value ){
+            this[ _spriteSheet ] = value;
+            this.bounds.width = value.cellWidth;
+            this.bounds.height = value.cellHeight;
+        }
+
+		set fps( value ){
+			this[ _fps ] = value;
+			this[ _ticker ].setFPS( value );
+			return this;
+		}
+
+		play(){
+		    this[ _tickerHandler ]();
+			this[ _ticker ].run();
+			return this;
+		}
+
+		stop(){
+			this[ _ticker ].stop();
+			return this;
+		}
+
+		updateDisplay( context ){
+		    const bounds = this[ _spriteSheet ].currentBounds;
+            context.drawImage(
+                this[ _spriteSheet ].image,
+                bounds.x,
+                bounds.y,
+                bounds.width,
+                bounds.height,
+                0,
+                0,
+                bounds.width,
+                bounds.height,
+            );
+        }
+
+		[ _tickerHandler ](){
+		    this[ _spriteSheet ].next();
+            this.stage.changed = true;
+		    this.stage.update();
+		}
+	}
+
+	return Sprite;
 })();

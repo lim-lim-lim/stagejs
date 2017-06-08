@@ -25,8 +25,7 @@ stg.Shape = ( ()=>{
             this[ _graphics ] = value;
         }
 
-        updateDisplay(){
-            const context = this.stage.context;
+        updateDisplay( context ){
             for( let command of this[ _graphics ].commandList ){
                 context.fillStyle = command.fillStyle;
                 context.strokeStyle = command.strokeStyle;

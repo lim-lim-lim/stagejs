@@ -51,7 +51,7 @@ stg.DisplayContainer = ( ()=>{
             return this[ _childList][ index ];
         }
 
-        updateDisplay(){
+        updateDisplay( context ){
             for( let child of this[ _childList ] ) {
                 if (child.visible) {
                     child.update();

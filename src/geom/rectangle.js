@@ -74,6 +74,7 @@ stg.Rectangle = ( ()=>{
             this[ _updateBottom ]();
         }
 
+        //TODO left right top bottom 삭제 하고 x, y로 수정 할 것.
         set left( value ){
             this.leftTop.x = value;
             this.leftBottom.x = value;

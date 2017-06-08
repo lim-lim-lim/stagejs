@@ -242,7 +242,7 @@ stg.Display = ( ()=>{
         update(){
             this.stage.context.save();
             this.updateTransformation();
-            this.updateDisplay();
+            this.updateDisplay( this.stage.context );
             this.stage.context.restore();
         }
 

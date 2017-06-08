@@ -21,7 +21,9 @@ module.exports = function(grunt) {
                     'src/display/display-container.js',
                     'src/display/stage.js',
                     'src/display/graphics.js',
-                    'src/display/shape.js'
+                    'src/display/shape.js',
+                    'src/display/sprite-sheet.js',
+                    'src/display/sprite.js'
                 ],
             dest:'dist/stage.js'
         }
