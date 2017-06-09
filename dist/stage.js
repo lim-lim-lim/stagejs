@@ -16,6 +16,10 @@ stg.EventDispatcher = ( ()=>{
             this[ _eventMap ] = {};
         }
 
+        get eventMap(){
+            return this[ _eventMap ];
+        }
+
         on( type, handler ){
             if( !this[ _eventMap ][ type ] ){
                 this[ _eventMap ][ type ] = [];
@@ -36,10 +40,18 @@ stg.EventDispatcher = ( ()=>{
             }
         }
 
-        trigger( type, data  ){
+        trigger( type, event ){
+            if( !(event instanceof stg.Event) ){
+                const tempEvent = new stg.Event( type );
+                if( event instanceof Object ){
+                    tempEvent.data = event;
+                }
+                event = tempEvent;
+            }
+
             if( this[ _eventMap ][ type ] ){
                 for( let item of this[ _eventMap ][ type ] ){
-                    item.call( this, new stg.Event( type ), data );
+                    item.call( this, event );
                 }
             }
         }
@@ -54,24 +66,56 @@ stg.Event = ( ()=>{
     'use strict';
 
     const _type = Symbol( 'type' );
+    const _data = Symbol( 'data' );
 
     class Event{
 
-        constructor( type ){
+        constructor( type, data ){
             this[ _type ] = type;
+            this[ _data ] = data;
         }
 
         get type(){
             return this[ _type ];
         }
 
+        get data(){
+            return this[ _data ];
+        }
+
         set type( value ){
             this[ _type ] = val;
         }
 
+        set data( value ){
+            this[ _data ] = value;
+        }
     }
 
     return Event;
+})();
+
+
+
+stg.MouseEvent = ( ()=>{
+    'use strict';
+
+    const _target = Symbol( 'target' );
+    const _currentTarget = Symbol( 'currentTarget' );
+
+    class MouseEvent extends stg.Event{
+
+        constructor( type, data, target, currentTarget ){
+            super( type, data );
+            this[ _target ] = target;
+            this[ _currentTarget ] = currentTarget;
+        }
+    }
+
+    MouseEvent.CLICK = 'click';
+    MouseEvent.MOUSE_OVER = 'mouseOver';
+    MouseEvent.MOUSE_OUT = 'mouseOut';
+    return MouseEvent;
 })();
 
 stg.Ticker = ( ()=>{
@@ -599,8 +643,9 @@ stg.Display = ( ()=>{
             this[ _scaleX ] = this[ _scaleY ] = 1;
             this[ _width ] = this[ _height ] = this[ _centerX ] = this[ _centerY ] = this[ _rotate ] = this[ _skewX ] =  this[ _skewY ] = 0;
             this[ _visible ] = true;
-            this.on( stg.Stage.ADD_TO_STAGE, ( event, stage ) => this[ _stage ] = stage );
-            this.on( stg.Stage.REMOVE_TO_STAGE, ( event ) => this[ _stage ] = null );
+
+            this.on( stg.Stage.ADD_TO_STAGE, () => this.stage.registerEventMap( this ) );
+            this.on( stg.Stage.REMOVE_TO_STAGE, () => this.stage.deregisterEventMap( this ) );
         }
 
         get stage(){
@@ -785,7 +830,15 @@ stg.Display = ( ()=>{
             this[ _changedDisplay ]();
         }
 
-        updateDisplay(){
+        on( type, handler ){
+            super.on( type, handler );
+        }
+
+        off( type, handler ){
+            super.off( type, handler );
+        }
+
+        updateDisplay( context, tempContext ){
             throw new Error( 'Display 클래스를 상속하는 모든 자식 클래스는 updateDisplay를 구현해야 합니다.' );
         }
 
@@ -799,15 +852,21 @@ stg.Display = ( ()=>{
             this[ _transformTranslate ]( this.x, this.y );
             this[ _transformScale ]( this[ _scaleX ], this[ _scaleY ] );
             this[ _transformSkew ]( this[ _skewX ], this[ _skewY ] );
-            this.stage.context.transform( this[ _matrix ].a, this[ _matrix ].b, this[ _matrix ].c, this[ _matrix ].d, this[ _matrix ].tx, this[ _matrix ].ty );
+            this.stage.tempContext.transform( this[ _matrix ].a, this[ _matrix ].b, this[ _matrix ].c, this[ _matrix ].d, this[ _matrix ].tx, this[ _matrix ].ty );
             return this;
         }
 
         update(){
-            this.stage.context.save();
+            this.stage.tempContext.save();
             this.updateTransformation();
-            this.updateDisplay( this.stage.context );
-            this.stage.context.restore();
+            this.updateDisplay( this.stage.tempContext );
+            this.stage.context.drawImage( this.stage.tempCanvas, 0, 0 );
+            this.stage.tempContext.restore();
+            this.stage.tempContext.globalCompositeOperation = 'source-in';
+            this.stage.tempContext.fillStyle = '#'+this.colorKey;
+            this.stage.tempContext.fillRect( 0, 0, this.stage.tempCanvas.width, this.stage.tempCanvas.height );
+            this.stage.eventContext.drawImage(  this.stage.tempCanvas, 0, 0  );
+            this.stage.tempCanvas.width = this.stage.tempCanvas.width;
         }
 
         [ _transformTranslate ]( x=0, y=0 ){
@@ -866,17 +925,28 @@ stg.DisplayContainer = ( ()=>{
             display.colorKey = this.stage.createColorKey();
             display.parent = this;
             this.stage.changed = true;
+            display.trigger( stg.Stage.ADD_TO_STAGE );
             return this;
+        }
+
+        removeChildAll(){
+            while( this[ _childList ].length ){
+                this.removeChild( this[ _childList ][ this[ _childList ].length-1 ] );
+            }
         }
 
         removeChild( display ){
             const index = this[ _childList].indexOf( display );
             if( index === -1 ){ return; }
+            display.trigger( stg.Stage.REMOVE_TO_STAGE );
             this.removeChildAt( index );
             this.stage.returnColorKey( display.colorKey );
             display.colorKey = null;
             display.stage = null;
             display.parent = null;
+            if( display.childList  ){
+                display.removeChildAll();
+            }
             return this;
         }
 
@@ -908,40 +978,63 @@ stg.Stage = ( ()=>{
     'use strict';
 
     const _canvas = Symbol( 'canvas' );
+    const _eventCanvas = Symbol( 'eventCanvas' );
+    const _tempCanvas = Symbol( 'tempCanvas' );
     const _context = Symbol( 'context' );
+    const _eventContext = Symbol( 'eventContext' );
+    const _tempContext = Symbol( 'tempContext' );
     const _changed = Symbol( 'changed' );
     const _colorKey = Symbol( 'colorKey' );
     const _returnedColorKey = Symbol( 'returnedColorkey' );
     const _bounds = Symbol( 'bounds' );
     const _ticker = Symbol( 'ticker' );
+    const _eventTargetMap = Symbol( 'eventTargetMap' );
+    const _initFPS = Symbol( 'initFPS' );
+    const _initEventCanvas = Symbol( 'initEventCanvas' );
+    const _initEvent = Symbol( 'initEvent' );
 
     class Stage extends stg.DisplayContainer{
 
         constructor( canvasId, fps ){
             super();
             this[ _canvas ] = document.getElementById( canvasId );
+            this[ _eventCanvas ] = null;
+            this[ _tempCanvas ] = null;
             this[ _context ] = this[ _canvas ].getContext( '2d' );
+            this[ _eventContext ] = null;
+            this[ _tempContext ] = null;
             this[ _changed ] = false;
             this[ _colorKey ] = 0;
             this[ _returnedColorKey ] = [];
             this[ _bounds ] = new stg.Rectangle( 0, 0, this[ _canvas ].width, this[ _canvas ].height );
-
-            if( fps ){
-                this[ _ticker ] = new stg.Ticker( fps );
-                this[ _ticker ].on( stg.Ticker.TICK, delta=>{
-                    this.trigger( Stage.ENTER_FRAME, delta );
-                    this.update();
-                } );
-                this[ _ticker ].run();
-            }
+            this[ _eventTargetMap ] = {};
+            this[ _initFPS ]( fps );
+            this[ _initEventCanvas ]();
+            this[ _initEvent ]();
         }
 
         get canvas(){
             return this[ _canvas ];
         }
 
+        get eventCanvas(){
+            return this[ _eventCanvas ];
+        }
+
+        get tempCanvas(){
+            return this[ _tempCanvas ];
+        }
+
         get context(){
             return this[ _context ];
+        }
+
+        get eventContext(){
+            return this[ _eventContext ];
+        }
+
+        get tempContext(){
+            return this[ _tempContext ];
         }
 
         get stage(){
@@ -960,7 +1053,6 @@ stg.Stage = ( ()=>{
             return this[ _bounds ];
         }
 
-
         get changed(){
             return this[ _changed ];
         }
@@ -973,7 +1065,9 @@ stg.Stage = ( ()=>{
             if( this[ _returnedColorKey].length ){
                 return this[ _returnedColorKey].shift();
             }
-            return Number( ++this[ _colorKey ]).toString( 16 );
+            let value = Number( ++this[ _colorKey ]).toString( 16 );
+            value = '0'.repeat( 6-value.length )+value;
+            return value;
         }
 
         returnColorKey( value ){
@@ -983,9 +1077,73 @@ stg.Stage = ( ()=>{
         update(){
             if( this.changed ){
                 this[ _canvas ].width = this[ _canvas ].width;
+                this[ _eventCanvas ].width = this[ _eventCanvas ].width;
+                this[ _tempCanvas ].width = this[ _tempCanvas ].width;
                 super.update();
                 this.changed = false;
             }
+        }
+
+        registerEventMap( display ){
+            const childEventMap = display.eventMap;
+            for( let type in childEventMap ){
+                if( !this[ _eventTargetMap ][ type ] ){
+                    this[ _eventTargetMap ][ type ] = [];
+                }
+                this[ _eventTargetMap ][ type ].push( display );
+            }
+        }
+
+        deregisterEventMap( display ){
+            const childEventMap = display.eventMap;
+            for( let type in childEventMap ){
+                const index = this[ _eventTargetMap ][ type ].indexOf( display );
+                this[ _eventTargetMap ][ type ].splice( index, 1 );
+            }
+        }
+
+        [ _initFPS ]( fps ){
+            if( fps ){
+                this[ _ticker ] = new stg.Ticker( fps );
+                this[ _ticker ].on( stg.Ticker.TICK, delta=>{
+                    this.trigger( Stage.ENTER_FRAME, delta );
+                    this.update();
+                } );
+                this[ _ticker ].run();
+            }
+        }
+
+        [ _initEventCanvas ](){
+            this[ _eventCanvas ] = document.createElement( 'canvas' );
+            this[ _eventCanvas ].width = this[ _canvas ].width;
+            this[ _eventCanvas ].height = this[ _canvas ].height;
+            this[ _eventContext ] = this[ _eventCanvas ].getContext( '2d' );
+
+            this[ _tempCanvas ] = document.createElement( 'canvas' );
+            this[ _tempCanvas ].width = this[ _canvas ].width;
+            this[ _tempCanvas ].height = this[ _canvas ].height;
+            this[ _tempContext ] = this[ _tempCanvas ].getContext( '2d' );
+        }
+
+        [ _initEvent ](){
+            const rect = this[ _canvas ].getBoundingClientRect();
+            this[ _canvas ].addEventListener( 'click', event=>{
+                event.preventDefault();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+                const color = this[ _eventContext ].getImageData( x, y, 1, 1 );
+                const r = color.data[ 0 ].toString( 16 );
+                const g = color.data[ 1 ].toString( 16 );
+                const b = color.data[ 2 ].toString( 16 );
+                const colorKey = '0'.repeat( 2-r.length)+ r + '0'.repeat( 2-g.length) + g + '0'.repeat( 2-b.length) + b;
+                for( let i=this[ _eventTargetMap ][ stg.MouseEvent.CLICK ].length-1, count=0 ; i>=count ; i-=1 ){
+                    let item = this[ _eventTargetMap ][ stg.MouseEvent.CLICK ][ i ];
+                    if( colorKey === item.colorKey ){
+                        item.trigger( stg.MouseEvent.CLICK, new stg.MouseEvent() );
+                        break;
+                    }
+                }
+            });
         }
     }
 

@@ -12,6 +12,10 @@ stg.EventDispatcher = ( ()=>{
             this[ _eventMap ] = {};
         }
 
+        get eventMap(){
+            return this[ _eventMap ];
+        }
+
         on( type, handler ){
             if( !this[ _eventMap ][ type ] ){
                 this[ _eventMap ][ type ] = [];
@@ -32,10 +36,18 @@ stg.EventDispatcher = ( ()=>{
             }
         }
 
-        trigger( type, data  ){
+        trigger( type, event ){
+            if( !(event instanceof stg.Event) ){
+                const tempEvent = new stg.Event( type );
+                if( event instanceof Object ){
+                    tempEvent.data = event;
+                }
+                event = tempEvent;
+            }
+
             if( this[ _eventMap ][ type ] ){
                 for( let item of this[ _eventMap ][ type ] ){
-                    item.call( this, new stg.Event( type ), data );
+                    item.call( this, event );
                 }
             }
         }

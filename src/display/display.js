@@ -35,8 +35,9 @@ stg.Display = ( ()=>{
             this[ _scaleX ] = this[ _scaleY ] = 1;
             this[ _width ] = this[ _height ] = this[ _centerX ] = this[ _centerY ] = this[ _rotate ] = this[ _skewX ] =  this[ _skewY ] = 0;
             this[ _visible ] = true;
-            this.on( stg.Stage.ADD_TO_STAGE, ( event, stage ) => this[ _stage ] = stage );
-            this.on( stg.Stage.REMOVE_TO_STAGE, ( event ) => this[ _stage ] = null );
+
+            this.on( stg.Stage.ADD_TO_STAGE, () => this.stage.registerEventMap( this ) );
+            this.on( stg.Stage.REMOVE_TO_STAGE, () => this.stage.deregisterEventMap( this ) );
         }
 
         get stage(){
@@ -221,7 +222,15 @@ stg.Display = ( ()=>{
             this[ _changedDisplay ]();
         }
 
-        updateDisplay(){
+        on( type, handler ){
+            super.on( type, handler );
+        }
+
+        off( type, handler ){
+            super.off( type, handler );
+        }
+
+        updateDisplay( context, tempContext ){
             throw new Error( 'Display 클래스를 상속하는 모든 자식 클래스는 updateDisplay를 구현해야 합니다.' );
         }
 
@@ -235,15 +244,21 @@ stg.Display = ( ()=>{
             this[ _transformTranslate ]( this.x, this.y );
             this[ _transformScale ]( this[ _scaleX ], this[ _scaleY ] );
             this[ _transformSkew ]( this[ _skewX ], this[ _skewY ] );
-            this.stage.context.transform( this[ _matrix ].a, this[ _matrix ].b, this[ _matrix ].c, this[ _matrix ].d, this[ _matrix ].tx, this[ _matrix ].ty );
+            this.stage.tempContext.transform( this[ _matrix ].a, this[ _matrix ].b, this[ _matrix ].c, this[ _matrix ].d, this[ _matrix ].tx, this[ _matrix ].ty );
             return this;
         }
 
         update(){
-            this.stage.context.save();
+            this.stage.tempContext.save();
             this.updateTransformation();
-            this.updateDisplay( this.stage.context );
-            this.stage.context.restore();
+            this.updateDisplay( this.stage.tempContext );
+            this.stage.context.drawImage( this.stage.tempCanvas, 0, 0 );
+            this.stage.tempContext.restore();
+            this.stage.tempContext.globalCompositeOperation = 'source-in';
+            this.stage.tempContext.fillStyle = '#'+this.colorKey;
+            this.stage.tempContext.fillRect( 0, 0, this.stage.tempCanvas.width, this.stage.tempCanvas.height );
+            this.stage.eventContext.drawImage(  this.stage.tempCanvas, 0, 0  );
+            this.stage.tempCanvas.width = this.stage.tempCanvas.width;
         }
 
         [ _transformTranslate ]( x=0, y=0 ){

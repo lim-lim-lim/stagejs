@@ -8,7 +8,7 @@
             width:650px;
         }
 
-        #stage{
+        #world{
             float: left;
             display: inline-block;
             border:  1px solid gray;
@@ -42,7 +42,7 @@
 <h1>Transform</h1>
 
 <div id="container">
-    <canvas id="stage" width="300" height="300"></canvas>
+    <canvas id="world" width="300" height="300"></canvas>
     <div class="options">
         <div class="options_container">
             <div>
@@ -79,7 +79,7 @@
 
 <script src="../dist/stage.js"></script>
 <script>
-    const stage = new stg.Stage( 'stage' );
+    const stage = new stg.Stage( 'world' );
     const graphics = new stg.Graphics();
     const PI2 = Math.PI*2;
 

@@ -8,12 +8,14 @@
             width:650px;
         }
 
-        #stage{
+        #world{
             float: left;
             display: inline-block;
-            border:  1px solid gray;
         }
 
+        canvas{
+            border:  1px solid gray;
+        }
     </style>
 </head>
 <body>
@@ -21,13 +23,13 @@
 <h1>EnterFrame</h1>
 
 <div id="container">
-    <canvas id="stage" width="300" height="300"></canvas>
+    <canvas id="world" width="300" height="300"></canvas>
 </div>
 
 <script src="../dist/stage.js"></script>
 <script>
 
-    const stage = new stg.Stage( 'stage', 40 );
+    const stage = new stg.Stage( 'world', 40 );
     const itemNum = 20;
     const itemList = [];
     const graphics = new stg.Graphics();
@@ -46,7 +48,7 @@
     graphics.stroke();
 
     for( let i=0 ; i<itemNum ; i+=1 ){
-        let item = new stg.Shape( graphics );
+        const item = new stg.Shape( graphics );
         item.x = startX;
         item.y = startY;
         stage.addChild( item );

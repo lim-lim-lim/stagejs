@@ -27,17 +27,28 @@ stg.DisplayContainer = ( ()=>{
             display.colorKey = this.stage.createColorKey();
             display.parent = this;
             this.stage.changed = true;
+            display.trigger( stg.Stage.ADD_TO_STAGE );
             return this;
+        }
+
+        removeChildAll(){
+            while( this[ _childList ].length ){
+                this.removeChild( this[ _childList ][ this[ _childList ].length-1 ] );
+            }
         }
 
         removeChild( display ){
             const index = this[ _childList].indexOf( display );
             if( index === -1 ){ return; }
+            display.trigger( stg.Stage.REMOVE_TO_STAGE );
             this.removeChildAt( index );
             this.stage.returnColorKey( display.colorKey );
             display.colorKey = null;
             display.stage = null;
             display.parent = null;
+            if( display.childList  ){
+                display.removeChildAll();
+            }
             return this;
         }
 
