@@ -828,8 +828,7 @@ stg.Display = ( ()=>{
 
         [ _changedDisplay ](){
             if( !this.stage ){ return; }
-            this.stage.changed = true;
-            this.parent.bounds.extends( this.computedBounds );
+            // this.parent.bounds.extends( this.computedBounds );
             if( !this.stage.changed ){
                 this.stage.changed = true;
             }
@@ -914,10 +913,11 @@ stg.Stage = ( ()=>{
     const _colorKey = Symbol( 'colorKey' );
     const _returnedColorKey = Symbol( 'returnedColorkey' );
     const _bounds = Symbol( 'bounds' );
+    const _ticker = Symbol( 'ticker' );
 
     class Stage extends stg.DisplayContainer{
 
-        constructor( canvasId ){
+        constructor( canvasId, fps ){
             super();
             this[ _canvas ] = document.getElementById( canvasId );
             this[ _context ] = this[ _canvas ].getContext( '2d' );
@@ -925,6 +925,15 @@ stg.Stage = ( ()=>{
             this[ _colorKey ] = 0;
             this[ _returnedColorKey ] = [];
             this[ _bounds ] = new stg.Rectangle( 0, 0, this[ _canvas ].width, this[ _canvas ].height );
+
+            if( fps ){
+                this[ _ticker ] = new stg.Ticker( fps );
+                this[ _ticker ].on( stg.Ticker.TICK, delta=>{
+                    this.trigger( Stage.ENTER_FRAME, delta );
+                    this.update();
+                } );
+                this[ _ticker ].run();
+            }
         }
 
         get canvas(){
@@ -982,6 +991,7 @@ stg.Stage = ( ()=>{
 
     Stage.ADD_TO_STAGE = 'addToStage';
     Stage.REMOVE_TO_STAGE = 'removeToStage';
+    Stage.ENTER_FRAME = 'enterFrame';
 
     return Stage;
 })();

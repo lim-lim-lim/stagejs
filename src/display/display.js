@@ -264,8 +264,7 @@ stg.Display = ( ()=>{
 
         [ _changedDisplay ](){
             if( !this.stage ){ return; }
-            this.stage.changed = true;
-            this.parent.bounds.extends( this.computedBounds );
+            // this.parent.bounds.extends( this.computedBounds );
             if( !this.stage.changed ){
                 this.stage.changed = true;
             }
