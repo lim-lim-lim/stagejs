@@ -4,7 +4,7 @@ Canvas 2D Javascript Library
 
 ### Hello Rect
 
-![](./assets/screenshot/01.rect.png)
+[![](./assets/screenshot/01.rect.png)]( http://blog.limlimlim.com/stagejs/test-view/01-rect.html )
 
 ```html
 <!DOCTYPE html>
