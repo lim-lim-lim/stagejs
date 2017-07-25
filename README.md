@@ -3,6 +3,9 @@
 Canvas 2D Javascript Library
 
 ### Hello Rect
+
+![](./assets/screenshot/01.rect.png)
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -35,11 +38,13 @@ Canvas 2D Javascript Library
 </html>
 ```
 
-![](./assets/screenshot/01.rect.png)
 
 
 
 ### Graphics
+
+![](./assets/screenshot/02.graphics.png)
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -112,6 +117,9 @@ Canvas 2D Javascript Library
 ```
 
 #### Transform
+
+![](./assets/screenshot/03.transform.png)
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -258,6 +266,9 @@ Canvas 2D Javascript Library
 ```
 
 #### Rotate
+
+![](./assets/screenshot/04.rotate.png)
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -385,6 +396,9 @@ Canvas 2D Javascript Library
 ```
 
 #### Display Object Container
+
+![](./assets/screenshot/05.dispay-object-container.png)
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -525,6 +539,9 @@ Canvas 2D Javascript Library
 ```
 
 #### Ticker
+
+![](./assets/screenshot/06.ticker.png)
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -637,6 +654,9 @@ Canvas 2D Javascript Library
 ```
 
 #### Sprite
+
+![](./assets/screenshot/07.sprite.png)
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -736,6 +756,9 @@ Canvas 2D Javascript Library
 ```
 
 #### Enter Frame
+
+![](./assets/screenshot/08.enter-frame.png)
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -806,6 +829,9 @@ Canvas 2D Javascript Library
 ```
 
 #### Mouse Event
+
+[![](./assets/screenshot/09.mouse-event.png)]( http://blog.limlimlim.com/stagejs/test-view/01-rect.html)
+
 ```html
 <!DOCTYPE html>
 <html>
