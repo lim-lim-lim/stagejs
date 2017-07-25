@@ -2,9 +2,7 @@
 
 Canvas 2D Javascript Library
 
-### Show Case
-
-#### Hello Rect
+### Hello Rect
 ```html
 <!DOCTYPE html>
 <html>
@@ -36,8 +34,11 @@ Canvas 2D Javascript Library
 </body>
 </html>
 ```
+![](../assets/screenshot/01.rect.png)
 
-#### Graphics
+
+
+### Graphics
 ```html
 <!DOCTYPE html>
 <html>
