@@ -116,7 +116,7 @@ Canvas 2D Javascript Library
 </html>
 ```
 
-#### Transform
+### Transform
 
 [![](./assets/screenshot/03.transform.png)]( http://blog.limlimlim.com/stagejs/test-view/03-transform.html )
  
@@ -265,7 +265,7 @@ Canvas 2D Javascript Library
 </html>
 ```
 
-#### Rotate
+### Rotate
 
 [![](./assets/screenshot/04.rotate.png)]( http://blog.limlimlim.com/stagejs/test-view/04-rotate.html )
 
@@ -395,7 +395,7 @@ Canvas 2D Javascript Library
 </html>
 ```
 
-#### Display Object Container
+### Display Object Container
 
 [![](./assets/screenshot/05.dispay-object-container.png)]( http://blog.limlimlim.com/stagejs/test-view/05-display-container.html )
 
@@ -538,7 +538,7 @@ Canvas 2D Javascript Library
 </html>
 ```
 
-#### Ticker
+### Ticker
 
 [![](./assets/screenshot/06.ticker.png)]( http://blog.limlimlim.com/stagejs/test-view/06-ticker.html )
 
@@ -653,7 +653,7 @@ Canvas 2D Javascript Library
 </html>
 ```
 
-#### Sprite
+### Sprite
 
 [![](./assets/screenshot/07.sprite.png)]( http://blog.limlimlim.com/stagejs/test-view/07-sprite.html )
 
@@ -755,7 +755,7 @@ Canvas 2D Javascript Library
 </html>
 ```
 
-#### Enter Frame
+### Enter Frame
 
 [![](./assets/screenshot/08.enter-frame.png)]( http://blog.limlimlim.com/stagejs/test-view/08-enter-frame.html )
 
@@ -828,7 +828,7 @@ Canvas 2D Javascript Library
 </html>
 ```
 
-#### Mouse Event
+### Mouse Event
 
 [![](./assets/screenshot/09.mouse-event.png)]( http://blog.limlimlim.com/stagejs/test-view/09-mouse-event.html )
 
