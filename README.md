@@ -2,23 +2,23 @@
 
 Canvas 2D Javascript Library
 
-###Show Case
+### Show Case
 
-####Hello Rect
+#### Hello Rect
 
-####Graphics
+#### Graphics
 
-####Transform
+#### Transform
 
-####Rotate
+#### Rotate
 
-####Display Object Container
+#### Display Object Container
 
-####Ticker
+#### Ticker
 
-####Sprite
+#### Sprite
 
 
-####Enter Frame
+#### Enter Frame
 
-####Mouse Event
+#### Mouse Event
