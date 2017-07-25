@@ -34,7 +34,8 @@ Canvas 2D Javascript Library
 </body>
 </html>
 ```
-![](../assets/screenshot/01.rect.png)
+
+![](./assets/screenshot/01.rect.png)
 
 
 
