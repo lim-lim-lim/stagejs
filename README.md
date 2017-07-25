@@ -43,7 +43,7 @@ Canvas 2D Javascript Library
 
 ### Graphics
 
-![](./assets/screenshot/02.graphics.png)
+[![](./assets/screenshot/02.graphics.png)]( http://blog.limlimlim.com/stagejs/test-view/02-graphics.html )
 
 ```html
 <!DOCTYPE html>
@@ -118,8 +118,8 @@ Canvas 2D Javascript Library
 
 #### Transform
 
-![](./assets/screenshot/03.transform.png)
-
+[![](./assets/screenshot/03.transform.png)]( http://blog.limlimlim.com/stagejs/test-view/03-transform.html )
+ 
 ```html
 <!DOCTYPE html>
 <html>
@@ -267,7 +267,7 @@ Canvas 2D Javascript Library
 
 #### Rotate
 
-![](./assets/screenshot/04.rotate.png)
+[![](./assets/screenshot/04.rotate.png)]( http://blog.limlimlim.com/stagejs/test-view/04-rotate.html )
 
 ```html
 <!DOCTYPE html>
@@ -397,7 +397,7 @@ Canvas 2D Javascript Library
 
 #### Display Object Container
 
-![](./assets/screenshot/05.dispay-object-container.png)
+[![](./assets/screenshot/05.dispay-object-container.png)]( http://blog.limlimlim.com/stagejs/test-view/05-display-container.html )
 
 ```html
 <!DOCTYPE html>
@@ -540,7 +540,7 @@ Canvas 2D Javascript Library
 
 #### Ticker
 
-![](./assets/screenshot/06.ticker.png)
+[![](./assets/screenshot/06.ticker.png)]( http://blog.limlimlim.com/stagejs/test-view/06-ticker.html )
 
 ```html
 <!DOCTYPE html>
@@ -655,7 +655,7 @@ Canvas 2D Javascript Library
 
 #### Sprite
 
-![](./assets/screenshot/07.sprite.png)
+[![](./assets/screenshot/07.sprite.png)]( http://blog.limlimlim.com/stagejs/test-view/07-sprite.html )
 
 ```html
 <!DOCTYPE html>
@@ -757,7 +757,7 @@ Canvas 2D Javascript Library
 
 #### Enter Frame
 
-![](./assets/screenshot/08.enter-frame.png)
+[![](./assets/screenshot/08.enter-frame.png)]( http://blog.limlimlim.com/stagejs/test-view/08-enter-frame.html )
 
 ```html
 <!DOCTYPE html>
@@ -830,7 +830,7 @@ Canvas 2D Javascript Library
 
 #### Mouse Event
 
-[![](./assets/screenshot/09.mouse-event.png)]( http://blog.limlimlim.com/stagejs/test-view/01-rect.html)
+[![](./assets/screenshot/09.mouse-event.png)]( http://blog.limlimlim.com/stagejs/test-view/09-mouse-event.html )
 
 ```html
 <!DOCTYPE html>
