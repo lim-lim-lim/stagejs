@@ -17,11 +17,8 @@
     </style>
 </head>
 <body>
-
-<h1>Mouse Event</h1>
-
 <div id="container">
-    <canvas id="stage" width="500" height="500"></canvas>
+    <canvas id="stage" width="300" height="300"></canvas>
 </div>
 
 <script src="../dist/stage.js"></script>
@@ -29,13 +26,12 @@
     const stage = new stg.Stage( 'stage' );
     const itemNum = 30;
     const graphics = new stg.Graphics();
-    const startX = 250;
-    const startY = 250;
-    const radius = 200;
+    const startX = 150;
+    const startY = 150;
+    const radius = 120;
 
     graphics.fillStyle = '#F08';
     graphics.strokeStyle = '#903';
-    graphics.lineWidth = 2;
     graphics.beginPath();
     graphics.arc( 0, 0, 10, 0, Math.PI*2, false );
     graphics.fill();

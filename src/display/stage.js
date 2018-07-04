@@ -38,6 +38,7 @@ stg.Stage = ( ()=>{
             this[ _initFPS ]( fps );
             this[ _initEventCanvas ]();
             this[ _initEvent ]();
+            this.colorKey = this.createColorKey();
         }
 
         get canvas(){
@@ -92,7 +93,7 @@ stg.Stage = ( ()=>{
             if( this[ _returnedColorKey].length ){
                 return this[ _returnedColorKey].shift();
             }
-            let value = Number( ++this[ _colorKey ]).toString( 16 );
+            let value = Number( this[ _colorKey ]+=10 ).toString( 16 );
             value = '0'.repeat( 6-value.length )+value;
             return value;
         }
@@ -140,12 +141,12 @@ stg.Stage = ( ()=>{
             }
         }
 
-        [ _initEventCanvas ](){
+        [ _initEventCanvas ](){ 
             this[ _eventCanvas ] = document.createElement( 'canvas' );
             this[ _eventCanvas ].width = this[ _canvas ].width;
             this[ _eventCanvas ].height = this[ _canvas ].height;
             this[ _eventContext ] = this[ _eventCanvas ].getContext( '2d' );
-
+            // document.body.appendChild( this[ _eventCanvas ] );
             this[ _tempCanvas ] = document.createElement( 'canvas' );
             this[ _tempCanvas ].width = this[ _canvas ].width;
             this[ _tempCanvas ].height = this[ _canvas ].height;
