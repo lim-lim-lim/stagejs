@@ -230,7 +230,7 @@ stg.Display = ( ()=>{
             super.off( type, handler );
         }
 
-        updateDisplay( context, tempContext ){
+        updateDisplay( context ){
             throw new Error( 'Display 클래스를 상속하는 모든 자식 클래스는 updateDisplay를 구현해야 합니다.' );
         }
 
@@ -244,15 +244,18 @@ stg.Display = ( ()=>{
             this[ _transformTranslate ]( this.x, this.y );
             this[ _transformScale ]( this[ _scaleX ], this[ _scaleY ] );
             this[ _transformSkew ]( this[ _skewX ], this[ _skewY ] );
+            this.stage.context.transform( this[ _matrix ].a, this[ _matrix ].b, this[ _matrix ].c, this[ _matrix ].d, this[ _matrix ].tx, this[ _matrix ].ty );
             this.stage.tempContext.transform( this[ _matrix ].a, this[ _matrix ].b, this[ _matrix ].c, this[ _matrix ].d, this[ _matrix ].tx, this[ _matrix ].ty );
             return this;
         }
 
         update(){
+            this.stage.context.save();
             this.stage.tempContext.save();
             this.updateTransformation();
+            this.updateDisplay( this.stage.context );
             this.updateDisplay( this.stage.tempContext );
-            this.stage.context.drawImage( this.stage.tempCanvas, 0, 0 );
+            this.stage.context.restore();
             this.stage.tempContext.restore();
             this.stage.tempContext.globalCompositeOperation = 'source-in';
             this.stage.tempContext.fillStyle = '#'+this.colorKey;
