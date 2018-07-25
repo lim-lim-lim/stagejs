@@ -1,77 +1,67 @@
+import Display from "./display";
+import Stage from "./stage";
 
 
-export default class DisplayContainer{
+export default class DisplayContainer extends Display{
     
-}
-stg.DisplayContainer = ( ()=>{
-    'use strict';
+  private _children:Display[] = [];
 
-    const _childList = Symbol( 'childList' );
+  public get children():Display[]{
+    return this._children
+  }
 
-    class DisplayContainer extends stg.Display{
+  constructor(){
+    super();
+  }
 
-        constructor(){
-            super();
-            this[ _childList ] = [];
-        }
-
-        get childList(){
-            return this[ _childList ];
-        }
-
-        addChild( display ){
-            const index = this[ _childList].indexOf( display );
-            if( index !== -1 ){
-                this[ _childList].splice( index,1  );
-            }
-            this[ _childList].push( display );
-            display.stage = this.stage;
-            display.colorKey = this.stage.createColorKey();
-            display.parent = this;
-            this.stage.changed = true;
-            display.trigger( stg.Stage.ADD_TO_STAGE );
-            return this;
-        }
-
-        removeChildAll(){
-            while( this[ _childList ].length ){
-                this.removeChild( this[ _childList ][ this[ _childList ].length-1 ] );
-            }
-        }
-
-        removeChild( display ){
-            const index = this[ _childList].indexOf( display );
-            if( index === -1 ){ return; }
-            display.trigger( stg.Stage.REMOVE_TO_STAGE );
-            this.removeChildAt( index );
-            this.stage.returnColorKey( display.colorKey );
-            display.colorKey = null;
-            display.stage = null;
-            display.parent = null;
-            if( display.childList  ){
-                display.removeChildAll();
-            }
-            return this;
-        }
-
-        removeChildAt( index ){
-            this[ _childList].splice( index, 1 );
-            this.stage.changed = true;
-            return this;
-        }
-
-        getChildAt( index ){
-            return this[ _childList][ index ];
-        }
-
-        updateDisplay( context ){
-            for( let child of this[ _childList ] ) {
-                if (child.visible) {
-                    child.update();
-                }
-            }
-        }
+  public addChild( child:Display ):void{
+    const index:number = this.children.indexOf( child );
+    if( index !== -1 ){
+        this._children.splice( index, 1 );
     }
+    this._children.push( child );
+    child.stage = this.stage;
+    child.colorKey = this.stage.createColorKey();
+    child.parent = this;
+    this.stage.changed = true;
+    child.trigger( Stage.ADD_TO_STAGE );
+  }
 
-    return DisplayContainer;
-})();
+  public removeChildAll():void{
+    while( this._children.length ){
+        this.removeChild( this._children[ this._children.length-1 ] );
+    }
+  }
+
+  public removeChild( child:Display ):void{
+      const index = this._children.indexOf( child );
+      if( index === -1 ){ return; }
+      child.trigger( Stage.REMOVE_TO_STAGE );
+      this.removeChildAt( index );
+      this.stage.returnColorKey( child.colorKey );
+      child.colorKey = null;
+      child.stage = null;
+      child.parent = null;
+      if( child instanceof DisplayContainer  ){
+          ( child as DisplayContainer ).removeChildAll();
+      }
+  }
+
+  public removeChildAt( index:number ):void{
+      this.removeChild( this.getChildAt( index ) );
+      this._children.splice( index, 1 );
+      this.stage.changed = true;
+  }
+
+  public getChildAt( index:number ):Display{
+      return this._children[ index ];
+  }
+
+  public updateDisplay():void{
+      for( let child of this._children ) {
+          if (child.visible) {
+              child.update();
+          }
+      }
+  }
+}

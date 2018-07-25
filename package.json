@@ -4,7 +4,7 @@
   "description": "Javascript 2D graphics library",
   "main": "index.js",
   "scripts": {
-    "build": "",
+    "build": "webpack --mode=production",
     "test": "grun test"
   },
   "repository": {
@@ -32,6 +32,7 @@
     "karma-phantomjs-launcher": "^1.0.2"
   },
   "dependencies": {
+    "ts-loader": "^4.4.2",
     "tslint": "^5.11.0",
     "typescript": "^2.9.2"
   }

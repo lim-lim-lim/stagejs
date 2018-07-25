@@ -1,204 +1,158 @@
+import Point from "./point";
 
 export default class Rectangle{
     
+  private _width:number = 0;
+  private _height:number = 0;
+  private _leftTop:Point = null;
+  private _rightTop:Point = null;
+  private _leftBottom:Point = null;
+  private _rightBottom:Point = null;
+
+  public get width():number{ return this._width; }
+  public get height():number{ return this._height; }
+  public get left():number{ return this._leftTop.x; }
+  public get right():number{ return this._rightTop.x; }
+  public get top():number{ return this._leftTop.y; }
+  public get bottom():number{ return this._leftBottom.y; }
+  public get leftTop():Point{ return this._leftTop; }
+  public get rightTop():Point{ return this._rightTop; }
+  public get leftBottom():Point{ return this._leftBottom; }
+  public get rightBottom():Point{ return this._rightBottom; }
+
+  public set width( value:number ){ 
+    this._width = value;
+    this._updateRight();
+  }
+
+  public set height( value:number ){
+      this._height = value;
+      this._updateBottom();
+  }
+
+  public set left( value:number ){
+      this.leftTop.x = value;
+      this.leftBottom.x = value;
+      this._updateWidth();
+  }
+
+  public set right( value:number ){
+      this.rightTop.x = value;
+      this.rightBottom.x = value;
+      this._updateWidth();
+  }
+
+  public set top( value:number ){
+      this.leftTop.y = value;
+      this.rightTop.y = value;
+      this._updateHeight();
+  }
+
+  public set bottom( value:number ){
+      this.leftBottom.y = value;
+      this.rightBottom.y = value;
+      this._updateHeight();
+  }
+
+  public set leftTop( point:Point ){
+      this._leftTop = point;
+      this._updateWidth();
+      this._updateHeight();
+  }
+
+  public set rightTop( point:Point ){
+      this._rightTop = point;
+      this._updateWidth();
+      this._updateHeight();
+  }
+
+  public set leftBottom( point:Point ){
+      this._leftBottom = point;
+      this._updateWidth();
+      this._updateHeight();
+  }
+
+  public set rightBottom( point:Point ){
+      this._rightBottom = point;
+      this._updateWidth();
+      this._updateHeight();
+  }
+
+  constructor( x:number=0, y:number=0, width:number=0, height:number=0  ){
+    this._leftTop = new Point();
+    this._rightTop = new Point();
+    this._leftBottom = new Point();
+    this._rightBottom = new Point();
+    this.setTo( x, y, width, height );
+  }
+
+  public contains( x:number, y:number ):boolean{
+    return x >= this.left && x <= this.right && y <= this.bottom && y >= this.top;
+  }
+
+  public containsRect( rectangle:Rectangle ):boolean{
+      return rectangle.left >= this.left && rectangle.right <= this.right && rectangle.top >= this.top && rectangle.bottom <= this.bottom;
+  }
+
+  public intersects( rectangle:Rectangle ):boolean{
+      return this.contains( rectangle.left+1, rectangle.top+1 ) || this.contains( rectangle.left+1, rectangle.bottom-1 ) || this.contains( rectangle.right-1, rectangle.top+1 ) || this.contains( rectangle.right-1, rectangle.bottom-1 );
+  }
+
+  public intersection( rectangle:Rectangle ):Rectangle{
+      let result:Rectangle = null;
+      if( this.intersects( rectangle ) ){
+          result = new Rectangle();
+          result.left = Math.max( rectangle.left, this.left );
+          result.right = Math.min( rectangle.right, this.right );
+          result.top = Math.max( rectangle.top, this.top );
+          result.bottom = Math.min( rectangle.bottom, this.bottom );
+      }
+      return result;
+  }
+
+  public extends( rectangle:Rectangle ):void{
+      let left = Math.min( this.left, rectangle.left );
+      let right = Math.max( this.right, rectangle.right );
+      let top = Math.min( this.top, rectangle.top );
+      let bottom = Math.max( this.bottom, rectangle.bottom );
+      this.left = left;
+      this.right = right;
+      this.top = top;
+      this.bottom = bottom;
+  }
+
+  public setTo( x:number, y:number, width:number, height:number ):void{
+      this.left = x;
+      this.top = y;
+      this.width = width;
+      this.height = height;
+  }
+
+  public clone():Rectangle{
+      return new Rectangle( this.left, this.top, this.width, this.height );
+  }
+
+  public reset():void{
+      this.setTo( 0, 0, 0, 0 );
+  }
+
+  public equals( rectangle:Rectangle ):boolean{
+      return this.left === rectangle.left && this.top === rectangle.top && this.right === rectangle.right && this.bottom === rectangle.bottom && this.width === rectangle.width && this.height === rectangle.height;
+  }
+
+  private _updateWidth():void{ 
+    this._width = this._rightTop.x - this._leftTop.x;
+  }
+
+  private _updateHeight():void{
+      this._height = this._leftBottom.y - this._leftTop.y;
+  }
+
+  private _updateRight():void{ 
+    this._rightBottom.x = this._rightTop.x = this._leftTop.x + this._width;
+  }
+
+  private _updateBottom():void{
+      this._leftBottom.y = this._rightBottom.y = this._leftTop.y + this._height;
+  }
 }
-
-stg.Rectangle = ( ()=>{
-    'use strict';
-
-    const _width = Symbol( 'width' );
-    const _height = Symbol( 'height' );
-    const _updateWidth = Symbol( 'updateWidth' );
-    const _updateHeight = Symbol( 'updateHeight' );
-    const _updateRight = Symbol( 'updateRight' );
-    const _updateBottom = Symbol( 'updateBottom' );
-    const _leftTop = Symbol( 'leftTop' );
-    const _rightTop = Symbol( 'rightTop' );
-    const _leftBottom = Symbol( 'leftBottom' );
-    const _rightBottom = Symbol( 'rightBottom' );
-
-    class Rectangle{
-
-        constructor( x=0, y=0, width=0, height=0 ){
-            this[ _leftTop ] = new stg.Point();
-            this[ _rightTop ] = new stg.Point();
-            this[ _leftBottom ] = new stg.Point();
-            this[ _rightBottom ] = new stg.Point();
-            this.setTo( x, y, width, height );
-        }
-
-        get width(){
-            return this[ _width ];
-        }
-
-        get height(){
-            return this[ _height ];
-        }
-
-        get left(){
-            return this[ _leftTop ].x;
-        }
-
-        get right(){
-            return this[ _rightTop ].x;
-        }
-
-        get top(){
-            return this[ _leftTop ].y;
-        }
-
-        get bottom(){
-            return this[ _leftBottom ].y;
-        }
-
-        get leftTop(){
-            return this[ _leftTop ];
-        }
-
-        get rightTop(){
-            return this[ _rightTop ];
-        }
-
-        get leftBottom(){
-            return this[ _leftBottom ];
-        }
-
-        get rightBottom(){
-            return this[ _rightBottom ];
-        }
-
-        set width( value ){
-            this[ _width ] = value;
-            this[ _updateRight ]();
-        }
-
-        set height( value ){
-            this[ _height ] = value;
-            this[ _updateBottom ]();
-        }
-
-        //TODO left right top bottom 삭제 하고 x, y로 수정 할 것.
-        set left( value ){
-            this.leftTop.x = value;
-            this.leftBottom.x = value;
-            this[ _updateWidth ]();
-        }
-
-        set right( value ){
-            this.rightTop.x = value;
-            this.rightBottom.x = value;
-            this[ _updateWidth ]();
-        }
-
-        set top( value ){
-            this.leftTop.y = value;
-            this.rightTop.y = value;
-            this[ _updateHeight ]();
-        }
-
-        set bottom( value ){
-            this.leftBottom.y = value;
-            this.rightBottom.y = value;
-            this[ _updateHeight ]();
-        }
-
-        set leftTop( point ){
-            this[ _leftTop ] = point;
-            this[ _updateWidth ]();
-            this[ _updateHeight ]();
-        }
-
-        set rightTop( point ){
-            this[ _rightTop ] = point;
-            this[ _updateWidth ]();
-            this[ _updateHeight ]();
-        }
-
-        set leftBottom( point ){
-            this[ _leftBottom ] = point;
-            this[ _updateWidth ]();
-            this[ _updateHeight ]();
-        }
-
-        set rightBottom( point ){
-            this[ _rightBottom ] = point;
-            this[ _updateWidth ]();
-            this[ _updateHeight ]();
-        }
-
-        contains( x, y ){
-            return x >= this.left && x <= this.right && y <= this.bottom && y >= this.top;
-        }
-
-        containsRect( rectangle ){
-            return rectangle.left >= this.left && rectangle.right <= this.right && rectangle.top >= this.top && rectangle.bottom <= this.bottom;
-        }
-
-        intersects( rectangle ){
-            return this.contains( rectangle.left+1, rectangle.top+1 ) || this.contains( rectangle.left+1, rectangle.bottom-1 ) || this.contains( rectangle.right-1, rectangle.top+1 ) || this.contains( rectangle.right-1, rectangle.bottom-1 );
-        }
-
-        intersection( rectangle ){
-            let result = null;
-            if( this.intersects( rectangle ) ){
-                result = new Rectangle();
-                result.left = Math.max( rectangle.left, this.left );
-                result.right = Math.min( rectangle.right, this.right );
-                result.top = Math.max( rectangle.top, this.top );
-                result.bottom = Math.min( rectangle.bottom, this.bottom );
-            }
-            return result;
-        }
-
-        extends( rectangle ){
-            let left = Math.min( this.left, rectangle.left );
-            let right = Math.max( this.right, rectangle.right );
-            let top = Math.min( this.top, rectangle.top );
-            let bottom = Math.max( this.bottom, rectangle.bottom );
-            this.left = left;
-            this.right = right;
-            this.top = top;
-            this.bottom = bottom;
-            return this;
-        }
-
-        setTo( x, y, width, height ){
-            this.left = x;
-            this.top = y;
-            this.width = width;
-            this.height = height;
-            return this;
-        }
-
-        clone(){
-            return new Rectangle( this.left, this.top, this.width, this.height );
-        }
-
-        reset(){
-            this.setTo( 0, 0, 0, 0 );
-            return this;
-        }
-
-        equals( rectangle ){
-            return this.left === rectangle.x && this.top === rectangle.y && this.width === rectangle.width && this.height === rectangle.height && this.left === rectangle.left && this.top === rectangle.top && this.right === rectangle.right && this.bottom === rectangle.bottom;
-        }
-
-        [ _updateWidth ](){
-            this[ _width ] = this[ _rightTop ].x - this[ _leftTop ].x;
-        }
-
-        [ _updateHeight ](){
-            this[ _height ] = this[ _leftBottom ].y - this[ _leftTop ].y;
-        }
-
-        [ _updateRight ](){
-            this[ _rightBottom ].x = this[ _rightTop ].x = this[ _leftTop ].x + this[ _width ];
-        }
-
-        [ _updateBottom ](){
-            this[ _leftBottom ].y = this[ _rightBottom ].y = this[ _leftTop ].y + this[ _height ];
-        }
-    }
-
-    return Rectangle;
-})();

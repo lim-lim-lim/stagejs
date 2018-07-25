@@ -1,183 +1,126 @@
 
-export default class Graphics{
-    
+export enum LineCap{
+  BUTT='butt',
+  ROUND='round',
+  SQUARE='square'
 }
 
-stg.Graphics = ( ()=>{
-    'use strict';
+export enum LineJoin{
+  ROUNT='round',
+  BEVEL='bevel',
+  MITER='miter'
+}
 
-    const _bounds = Symbol( 'bounds' );
-    const _fillStyle = Symbol( 'fillStyle' );
-    const _strokeStyle = Symbol( 'strokeStyle' );
-    const _lineWidth = Symbol( 'lineWidth' );
-    const _lineCap = Symbol( 'lineCap' );
-    const _lineJoin = Symbol( 'lineJoin' );
-    const _miterLimit = Symbol( 'miterLimit' );
-    const _commands = Symbol( 'commands' );
-    const _addCommand = Symbol( 'addCommand' );
+enum DrawCommandName{
+  RECT='rect',
+  FILL_RECT='fillRect',
+  STROKE_RECT='strokeRect',
+  CLEAR_RECT='clearRect',
+  BEGIN_PATH='beginPath',
+  CLOSE_PATH='closePath',
+  MOVE_TO='moveTo',
+  LINE_TO='lineTo',
+  ARC='arc',
+  ARC_TO='arcTo',
+  QUADRATIC_CURVE_TO='quadraticCurveTo',
+  BEZIER_CURVE_TO='bezierCurveTo',
+  FILL='fill',
+  STROKE='stroke'
+}
 
-    class Graphics {
+interface DrawCommand{
+  name:DrawCommandName;
+  arguments:any;
+  fillStyle:string;
+  strokeStyle:string;
+  lineWidth:number;
+  lineCap:LineCap;
+  lineJoin:LineJoin;
+  miterLimit:number
+}
 
-        constructor(){
-            this[ _commands ] = new Set();
-            this[ _fillStyle ] = null;
-            this[ _strokeStyle ] = null;
-            this[ _lineCap ] = null;
-            this[ _lineJoin ] = null;
-            this[ _miterLimit ] = null;
-            this[ _lineWidth ] = null;
-            this[ _bounds ] = null;
-        }
+export default class Graphics{
+    public fillStyle:string = null;
+    public strokeStyle:string = null;
+    public lineWidth:number = 0;
+    public lineCap:LineCap = LineCap.BUTT;
+    public lineJoin:LineJoin = LineJoin.MITER;
+    public miterLimit:number = 0;
+    private _commands:Set<DrawCommand> = new Set()
 
-        get bounds(){
-            return this[ _bounds ];
-        }
+    public get commands():Set<DrawCommand>{ return this._commands; }
+    public get commandList():IterableIterator<DrawCommand>{ return this._commands.values(); }
 
-        get commands(){
-            return this[ _commands ];
-        }
-
-        get commandList(){
-            return this[ _commands ].values();
-        }
-
-        get fillStyle(){
-            return this[ _fillStyle ];
-        }
-
-        get strokeStyle(){
-            return this[ _strokeStyle ];
-        }
-
-        get lineCap(){
-            return this[ _lineCap ];
-        }
-
-        get lineJoin(){
-            return this[ _lineJoin ];
-        }
-
-        get miterLimit(){
-            return this[ _miterLimit ];
-        }
-
-        get lineWidth(){
-            return this[ _lineWidth ];
-        }
-
-        set bounds( value ){
-            this[ _bounds ] = value;
-        }
-
-        set fillStyle( value ){
-            this[ _fillStyle ] = value;
-        }
-
-        set strokeStyle( value ){
-            this[ _strokeStyle ] = value;
-        }
-
-        set lineCap( value ){
-            this[ _lineCap ] = value;
-        }
-
-        set lineJoin( value ){
-            this[ _lineJoin ] = value;
-        }
-
-        set miterLimit( value ){
-            this[ _miterLimit ] = value;
-        }
-
-        set lineWidth( value ){
-            this[ _lineWidth ] = value;
-        }
-
-
-        rect( x, y, width, height ){
-            this[ _addCommand ]( 'rect', arguments );
-            return this;
-        }
-
-        fillRect( x, y, width, height ){
-            this[ _addCommand ]( 'fillRect', arguments );
-            return this;
-        }
-
-        strokeRect( x, y, width, height ){
-            this[ _addCommand ]( 'strokeRect', arguments );
-            return this;
-        }
-
-        clearRect( x, y, width, height ){
-            this[ _addCommand ]( 'clearRect', arguments );
-            return this;
-        }
-
-        beginPath(){
-            this[ _addCommand ]( 'beginPath' );
-            return this;
-        }
-
-        closePath(){
-            this[ _addCommand ]( 'closePath' );
-            return this;
-        }
-
-        moveTo( x, y ){
-            this[ _addCommand ]( 'moveTo', arguments );
-            return this;
-        }
-
-        lineTo( x, y ){
-            this[ _addCommand ]( 'lineTo', arguments );
-            return this;
-        }
-
-        arc( x, y, radius, startAngle, endAngle, anticlockwise ){
-            this[ _addCommand ]( 'arc', arguments );
-            return this;
-        }
-
-        arcTo( x1, y1, x2, y2, radius ){
-            this[ _addCommand ]( 'arcTo', arguments );
-            return this;
-        }
-
-        quadraticCurveTo( cp1x, cp1y, x, y ){
-            this[ _addCommand ]( 'quadraticCurveTo', arguments );
-            return this;
-        }
-
-        bezierCurveTo( cp1x, cp1y, cp2x, cp2y, x, y ){
-            this[ _addCommand ]( 'bezierCurveTo', arguments );
-            return this;
-        }
-
-        fill(){
-            this[ _addCommand ]( 'fill' );
-            return this;
-        }
-
-        stroke(){
-            this[ _addCommand ]( 'stroke' );
-            return this;
-        }
-
-        clear(){
-            this[ _commands ].clear();
-            return this;
-        }
-
-        [ _addCommand ]( name, args ){
-            this[ _commands ].add( {
-                name:name, arguments:args,
-                fillStyle: this[ _fillStyle ], strokeStyle: this[ _strokeStyle ],
-                lineWidth: this[ _lineWidth ], lineCap: this[ _lineCap ],
-                lineJoin: this[ _lineJoin ], miterLimit: this[ _miterLimit ]
-            });
-        }
+    public rect( x:number, y:number, width:number, height:number ):void{
+      this._addCommand( DrawCommandName.RECT, arguments );
+    }
+    
+    public fillRect( x:number, y:number, width:number, height:number ):void{
+        this._addCommand( DrawCommandName.FILL_RECT, arguments );
+    }
+    
+    public strokeRect( x:number, y:number, width:number, height:number ):void{
+        this._addCommand( DrawCommandName.STROKE_RECT, arguments );
     }
 
-    return Graphics;
-})();
+    public clearRect( x:number, y:number, width:number, height:number ):void{
+        this._addCommand( DrawCommandName.CLEAR_RECT, arguments );
+    }
+
+    public beginPath():void{
+        this._addCommand( DrawCommandName.BEGIN_PATH );
+    }
+
+    public closePath():void{
+        this._addCommand( DrawCommandName.CLOSE_PATH );
+    }
+    
+    public moveTo( x:number, y:number ):void{
+        this._addCommand( DrawCommandName.MOVE_TO, arguments );
+    }
+
+    public lineTo( x:number, y:number ):void{
+        this._addCommand( DrawCommandName.LINE_TO, arguments );
+    }
+
+    public arc( x:number, y:number, radius:number, startAngle:number, endAngle:number, anticlockwise:boolean ):void{
+        this._addCommand( DrawCommandName.ARC, arguments );
+    }
+
+    public arcTo( x1:number, y1:number, x2:number, y2:number, radius:number ):void{
+        this._addCommand( DrawCommandName.ARC_TO, arguments );
+    }
+
+    public quadraticCurveTo( cp1x:number, cp1y:number, x:number, y:number ):void{
+        this._addCommand( DrawCommandName.QUADRATIC_CURVE_TO, arguments );
+    }
+
+    public bezierCurveTo( cp1x:number, cp1y:number, cp2x:number, cp2y:number, x:number, y:number ):void{
+        this._addCommand( DrawCommandName.BEZIER_CURVE_TO, arguments );
+    }
+
+    public fill():void{
+        this._addCommand( DrawCommandName.FILL );
+    }
+    
+    public stroke():void{
+        this._addCommand( DrawCommandName.STROKE );
+    }
+
+    public clear():void{
+        this._commands.clear();
+    }
+
+    private _addCommand( name:DrawCommandName, args?:any ):void{
+        this._commands.add( {
+            name:name, 
+            arguments:args,
+            fillStyle: this.fillStyle, 
+            strokeStyle: this.strokeStyle,
+            lineWidth: this.lineWidth, 
+            lineCap: this.lineCap,
+            lineJoin: this.lineJoin, 
+            miterLimit: this.miterLimit
+        });
+    }
+}

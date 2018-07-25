@@ -1,49 +1,27 @@
+import Graphics from "./graphics";
+import Display from "./display";
 
-export default class Shaple extends Display{
-    
-}
+export default class Shape extends Display{
+  public graphics:Graphics = null;
 
-stg.Shape = ( ()=>{
-    'use strict';
+  constructor( graphics:Graphics ){
+    super();
+    this.graphics = graphics || new Graphics();
+  }
 
-    const _graphics = Symbol( 'graphics' );
-    const _currentX = Symbol( 'currentX' );
-    const _currentY = Symbol( 'currentY' );
-
-    class Shape extends stg.Display{
-
-        constructor( graphics ){
-            super();
-            this[ _currentX ] = 0;
-            this[ _currentY ] = 0;
-            this.graphics = graphics || new stg.Graphics();
-            this.graphics.bounds = this.bounds;
-        }
-
-        get graphics(){
-            return this[ _graphics ];
-        }
-
-        set graphics( value ){
-            this[ _graphics ] = value;
-        }
-
-        updateDisplay( context ){
-            for( let command of this[ _graphics ].commandList ){
-                context.fillStyle = command.fillStyle;
-                context.strokeStyle = command.strokeStyle;
-                context.lineWidth = command.lineWidth;
-                context.lineCap = command.lineCap;
-                context.lineJoin = command.lineJoin;
-                context.miterLimit = command.miterLimit;
-                if( command.arguments ){
-                    context[ command.name ]( ...command.arguments );
-                }else{
-                    context[ command.name ]();
-                }
-            }
+  updateDisplay( context:CanvasRenderingContext2D ):void{
+    for( let command of this.graphics.commandList ){
+        context.fillStyle = command.fillStyle;
+        context.strokeStyle = command.strokeStyle;
+        context.lineWidth = command.lineWidth;
+        context.lineCap = command.lineCap;
+        context.lineJoin = command.lineJoin;
+        context.miterLimit = command.miterLimit;
+        if( command.arguments ){
+            (context as any)[ command.name ]( ...command.arguments );
+        }else{
+            (context as any)[ command.name ]();
         }
     }
-
-    return Shape;
-})();
+  }
+}

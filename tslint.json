@@ -7,6 +7,5 @@
     "rules": {
         "variable-name":[ true, "allow-leading-underscore" ]
     },
-    "rulesDirectory": [],
-    
+    "rulesDirectory": []
 }

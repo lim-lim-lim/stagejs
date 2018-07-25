@@ -36,7 +36,7 @@ export default class EventDispatcher {
         }
     }
 
-    public trigger( type:string, data:any ){
+    public trigger( type:string, data?:any ){
         if( this._eventMap[ type ] ){
             for( let item of this._eventMap[ type ] ){
                 item.call( this, data );
