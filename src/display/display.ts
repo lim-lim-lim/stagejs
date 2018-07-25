@@ -21,7 +21,7 @@ export default class Display extends EventDispatcher{
     private _skewX:number = 0;
     private _skewY:number = 0;
     private _visible:boolean = true;   
-    private __changedDisplay:boolean = false;
+    private _changedDisplay:boolean = false;
 
     constructor(){
         super();

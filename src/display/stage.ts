@@ -1,8 +1,14 @@
 import DisplayContainer from "./display-container";
 
+enum StageEventType{
+  ADD_TO_STAGE = 'addToStage',
+  REMOVE_TO_STAGE = 'removeToStage',
+}
 
 export default class Stage extends DisplayContainer{
     
+  public static readonly ADD_TO_STAGE:StageEventType = StageEventType.ADD_TO_STAGE;
+  public static readonly REMOVE_TO_STAGE:StageEventType = StageEventType.REMOVE_TO_STAGE;
 }
 
 stg.Stage = ( ()=>{

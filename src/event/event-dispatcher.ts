@@ -1,7 +1,5 @@
 
-interface Event{
-
-}
+import Event from './event'
 
 interface EventHandler{
     (event:Event, data:any):void;
