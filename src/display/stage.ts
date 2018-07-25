@@ -1,13 +1,13 @@
-import DisplayContainer from "./display-container";
-import Rectangle from "../geom/rectangle";
-import Ticker from "../util/ticker";
-import Display from "./display";
-import MouseEvent from "../event/mouse-event";
+import DisplayContainer from './display-container';
+import Rectangle from '../geom/rectangle';
+import Ticker from '../util/ticker';
+import Display from './display';
+import MouseEvent from '../event/mouse-event';
 
 enum StageEventType {
   ADD_TO_STAGE = 'addToStage',
   REMOVE_TO_STAGE = 'removeToStage',
-  ENTER_FRAME = 'enterFrame'
+  ENTER_FRAME = 'enterFrame',
 }
 
 interface EventTargetMap {
@@ -20,6 +20,7 @@ export default class Stage extends DisplayContainer {
   public static readonly REMOVE_TO_STAGE: StageEventType = StageEventType.REMOVE_TO_STAGE;
   public static readonly ENTER_FRAME: StageEventType = StageEventType.ENTER_FRAME;
 
+  public changed: boolean = false;
   private _canvas: HTMLCanvasElement = null;
   private _eventCanvas: HTMLCanvasElement = null;
   private _tempCanvas: HTMLCanvasElement = null;
@@ -29,8 +30,6 @@ export default class Stage extends DisplayContainer {
   private _returnedColorKey: string[] = [];
   private _ticker: Ticker = null;
   private _eventTargetMap: EventTargetMap = {};
-
-  public changed: boolean = false;
 
   constructor(canvasId: string, fps: number) {
     super();
@@ -76,7 +75,7 @@ export default class Stage extends DisplayContainer {
 
   public registerEventMap(display: Display): void {
     const childEventMap = display.eventMap;
-    for (let type in childEventMap) {
+    for (const type in childEventMap) {
       if (!this._eventTargetMap[type]) {
         this._eventTargetMap[type] = [];
       }
@@ -86,7 +85,7 @@ export default class Stage extends DisplayContainer {
 
   public unregisterEventMap(display: Display) {
     const childEventMap = display.eventMap;
-    for (let type in childEventMap) {
+    for (const type in childEventMap) {
       const index = this._eventTargetMap[type].indexOf(display);
       this._eventTargetMap[type].splice(index, 1);
     }
@@ -95,7 +94,7 @@ export default class Stage extends DisplayContainer {
   private _initFPS(fps: number) {
     if (fps) {
       this._ticker = new Ticker(fps);
-      this._ticker.on(Ticker.TICK, delta => {
+      this._ticker.on(Ticker.TICK, (delta) => {
         this.trigger(Stage.ENTER_FRAME, delta);
         this.update();
       });
@@ -116,9 +115,9 @@ export default class Stage extends DisplayContainer {
 
   private _initEvent() {
     const rect = this._canvas.getBoundingClientRect();
-    this._canvas.addEventListener('click', event => {
+    this._canvas.addEventListener('click', (event) => {
       event.preventDefault();
-      if( !this._eventTargetMap[MouseEvent.CLICK] || this._eventTargetMap[MouseEvent.CLICK].length ){ return; }
+      if (!this._eventTargetMap[MouseEvent.CLICK] || this._eventTargetMap[MouseEvent.CLICK].length) { return; }
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
       const color = this._eventContext.getImageData(x, y, 1, 1);
@@ -127,9 +126,9 @@ export default class Stage extends DisplayContainer {
       const b = color.data[2].toString(16);
       const colorKey = '0'.repeat(2 - r.length) + r + '0'.repeat(2 - g.length) + g + '0'.repeat(2 - b.length) + b;
       for (let i = this._eventTargetMap[MouseEvent.CLICK].length - 1, count = 0; i >= count; i -= 1) {
-        let item = this._eventTargetMap[MouseEvent.CLICK][i];
+        const item = this._eventTargetMap[MouseEvent.CLICK][i];
         if (colorKey === item.colorKey) {
-          //TODO:target / currentTarget 구분
+          // TODO:target / currentTarget 구분
           item.trigger(MouseEvent.CLICK, new MouseEvent(MouseEvent.CLICK, {}, item, item));
           break;
         }

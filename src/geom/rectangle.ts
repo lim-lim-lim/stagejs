@@ -1,4 +1,4 @@
-import Point from "./point";
+import Point from './point';
 
 export default class Rectangle {
 
@@ -111,10 +111,10 @@ export default class Rectangle {
   }
 
   public extends(rectangle: Rectangle): void {
-    let left = Math.min(this.left, rectangle.left);
-    let right = Math.max(this.right, rectangle.right);
-    let top = Math.min(this.top, rectangle.top);
-    let bottom = Math.max(this.bottom, rectangle.bottom);
+    const left: number = Math.min(this.left, rectangle.left);
+    const right: number = Math.max(this.right, rectangle.right);
+    const top: number = Math.min(this.top, rectangle.top);
+    const bottom: number = Math.max(this.bottom, rectangle.bottom);
     this.left = left;
     this.right = right;
     this.top = top;

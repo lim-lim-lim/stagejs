@@ -1,9 +1,7 @@
 
-import Event from './event'
+import Event from './event';
 
-interface EventHandler {
-  (event: Event, data: any): void;
-}
+type EventHandler = (event: Event, data: any) => void;
 
 interface EventMap {
   [prop: string]: EventHandler[];
@@ -38,7 +36,7 @@ export default class EventDispatcher {
 
   public trigger(type: string, data?: any) {
     if (this._eventMap[type]) {
-      for (let item of this._eventMap[type]) {
+      for (const item of this._eventMap[type]) {
         item.call(this, data);
       }
     }

@@ -1,6 +1,6 @@
-import Display from "./display";
-import SpriteSheet, { SpriteSheetEvent } from "./sprite-sheet";
-import Ticker from "../util/ticker";
+import Display from './display';
+import SpriteSheet, { SpriteSheetEvent } from './sprite-sheet';
+import Ticker from '../util/ticker';
 
 export default class Sprite extends Display {
   private _spriteSheet: SpriteSheet = null;
@@ -13,7 +13,7 @@ export default class Sprite extends Display {
     this._fps = fps;
     this._ticker = new Ticker(fps);
     this._ticker.on(Ticker.TICK, () => this._tickerHandler());
-    this._spriteSheet.on( SpriteSheetEvent.END, ()=>this.stop() );
+    this._spriteSheet.on(SpriteSheetEvent.END, () => this.stop());
   }
 
   public get spriteSheet(): SpriteSheet { return this._spriteSheet; }
@@ -35,7 +35,7 @@ export default class Sprite extends Display {
     this._ticker.run();
   }
 
-  public reset():void{
+  public reset(): void {
     this._spriteSheet.reset();
   }
 
@@ -45,7 +45,6 @@ export default class Sprite extends Display {
 
   public updateDisplay(context: CanvasRenderingContext2D): void {
     const bounds = this._spriteSheet.currentBounds;
-    console.log( bounds );
     context.drawImage(
       this._spriteSheet.image,
       bounds.left,

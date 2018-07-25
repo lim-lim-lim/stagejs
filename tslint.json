@@ -5,6 +5,8 @@
     ],
     "jsRules": {},
     "rules": {
+        "forin": false,
+        "ordered-imports": false,
         "object-literal-shorthand": false,
         "object-literal-sort-keys":false,
         "interface-name": [false],

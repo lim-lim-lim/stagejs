@@ -4,7 +4,7 @@ import Display from '../display/display';
 enum MouseEventType {
   CLICK = 'click',
   MOUSE_OVER = 'mouseOver',
-  MOUSE_OUT = 'mouseOut'
+  MOUSE_OUT = 'mouseOut',
 }
 
 export default class MouseEvent extends Event {

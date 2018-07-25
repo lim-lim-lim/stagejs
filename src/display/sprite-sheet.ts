@@ -1,10 +1,9 @@
-import EventDispatcher from "../event/event-dispatcher";
-import Rectangle from "../geom/rectangle";
-
+import EventDispatcher from '../event/event-dispatcher';
+import Rectangle from '../geom/rectangle';
 
 export enum SpriteSheetEvent {
   LOAD = 'load',
-  END = 'end'
+  END = 'end',
 }
 
 interface Frame {
@@ -54,8 +53,8 @@ export default class SpriteSheet extends EventDispatcher {
     } else {
       if (this._loop) {
         this._frameIndex = 0;
-      }else{
-        this.trigger( SpriteSheetEvent.END );
+      } else {
+        this.trigger(SpriteSheetEvent.END);
       }
     }
     this._updateBounds();
@@ -67,14 +66,14 @@ export default class SpriteSheet extends EventDispatcher {
     } else {
       if (this._loop) {
         this._frameIndex = this._frames.length - 1;
-      }else{
-        this.trigger( SpriteSheetEvent.END );
+      } else {
+        this.trigger(SpriteSheetEvent.END);
       }
     }
     this._updateBounds();
   }
 
-  public reset():void{
+  public reset(): void {
     this._frameIndex = -1;
   }
 

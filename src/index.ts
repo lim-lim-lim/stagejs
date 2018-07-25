@@ -28,7 +28,7 @@ const stg = {
   Matrix,
   Point,
   Rectangle,
-  Ticker
+  Ticker,
 };
 
 (window as any).stg = stg;
