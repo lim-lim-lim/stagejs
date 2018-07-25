@@ -1,162 +1,166 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Transform</title>
-    <style>
-        #container{
-            width:650px;
-        }
+  <meta charset="UTF-8">
+  <title>Transform</title>
+  <style>
+    #container {
+      width: 650px;
+    }
 
-        #world{
-            float: left;
-            display: inline-block;
-            border:  1px solid gray;
-        }
+    #world {
+      float: left;
+      display: inline-block;
+      border: 1px solid gray;
+    }
 
-        .options{
-            float: left;
-            display: inline-block;
-            border:  1px solid gray;
-            width: 300px;
-            height:300px;
-            font-size: 12px;
-        }
+    .options {
+      float: left;
+      display: inline-block;
+      border: 1px solid gray;
+      width: 300px;
+      height: 300px;
+      font-size: 12px;
+    }
 
-        .options .options_container{
-            padding: 10px;
-        }
+    .options .options_container {
+      padding: 10px;
+    }
 
-        .options_container div{
-            margin-bottom: 5px;
-            height: 25px;
-        }
+    .options_container div {
+      margin-bottom: 5px;
+      height: 25px;
+    }
 
-        .options label{
-            width: 100px;
-            display: inline-block;
-        }
-    </style>
+    .options label {
+      width: 100px;
+      display: inline-block;
+    }
+  </style>
 </head>
+
 <body>
-<div id="container">
+  <h1>Transform</h1>
+  <div id="container">
     <canvas id="world" width="300" height="300"></canvas>
     <div class="options">
-        <div class="options_container">
-            <div>
-                <label for="translate_x">Translate X</label>
-                <input type="range" id="translate_x" name="translate_x" min="0" max="300" value="150">
-            </div>
-            <div>
-                <label for="translate_y">Translate Y</label>
-                <input type="range" id="translate_y" name="translate_y" min="0" max="300" value="150">
-            </div>
-            <div>
-                <label for="scale_x">Scale X</label>
-                <input type="range" id="scale_x" name="scale_x" min="0.1" max="2" value="1" step="0.1">
-            </div>
-            <div>
-                <label for="scale_y">Scale Y</label>
-                <input type="range" id="scale_y" name="scale_y" min="0.1" max="2" value="1" step="0.1">
-            </div>
-            <div>
-                <label for="skew_x">Skew X</label>
-                <input type="range" id="skew_x" name="skew_x" min="0" max="3.14" value="0" step="0.1">
-            </div>
-            <div>
-                <label for="skew_y">Skew Y</label>
-                <input type="range" id="skew_y" name="skew_y" min="0" max="3.14" value="0" step="0.1">
-            </div>
-            <div>
-                <label for="rotate">Rotate</label>
-                <input type="range" id="rotate" name="rotate" min="0" max="6.28" value="0" step="0.1">
-            </div>
+      <div class="options_container">
+        <div>
+          <label for="translate_x">Translate X</label>
+          <input type="range" id="translate_x" name="translate_x" min="0" max="300" value="150">
         </div>
+        <div>
+          <label for="translate_y">Translate Y</label>
+          <input type="range" id="translate_y" name="translate_y" min="0" max="300" value="150">
+        </div>
+        <div>
+          <label for="scale_x">Scale X</label>
+          <input type="range" id="scale_x" name="scale_x" min="0.1" max="2" value="1" step="0.1">
+        </div>
+        <div>
+          <label for="scale_y">Scale Y</label>
+          <input type="range" id="scale_y" name="scale_y" min="0.1" max="2" value="1" step="0.1">
+        </div>
+        <div>
+          <label for="skew_x">Skew X</label>
+          <input type="range" id="skew_x" name="skew_x" min="0" max="3.14" value="0" step="0.1">
+        </div>
+        <div>
+          <label for="skew_y">Skew Y</label>
+          <input type="range" id="skew_y" name="skew_y" min="0" max="3.14" value="0" step="0.1">
+        </div>
+        <div>
+          <label for="rotate">Rotate</label>
+          <input type="range" id="rotate" name="rotate" min="0" max="6.28" value="0" step="0.1">
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<script src="../dist/stage.js"></script>
-<script>
-    const stage = new stg.Stage( 'world' );
+  <script src="../dist/stage.js"></script>
+  <script>
+    const stage = new stg.Stage('world');
     const graphics = new stg.Graphics();
-    const PI2 = Math.PI*2;
+    const PI2 = Math.PI * 2;
 
     graphics.lineWidth = 5;
     graphics.strokeStyle = '#903';
     graphics.fillStyle = '#F08';
 
     graphics.beginPath();
-    graphics.arc( 0, 0, 50, 0, PI2, false );
+    graphics.arc(0, 0, 50, 0, PI2, false);
     graphics.stroke();
     graphics.fill();
 
     graphics.strokeStyle = '#903';
     graphics.beginPath();
-    graphics.arc( -20, -25, 8, Math.PI, 0, false );
+    graphics.arc(-20, -25, 8, Math.PI, 0, false);
     graphics.stroke();
 
     graphics.beginPath();
-    graphics.arc( 20, -25, 8, Math.PI, 0, false );
+    graphics.arc(20, -25, 8, Math.PI, 0, false);
     graphics.stroke();
 
     graphics.beginPath();
-    graphics.arc( 0, 15, 20, Math.PI, 0, true );
+    graphics.arc(0, 15, 20, Math.PI, 0, true);
     graphics.stroke();
 
     graphics.fillStyle = '#903';
     graphics.beginPath();
-    graphics.arc( -20, -10, 8, 0, PI2, false );
-    graphics.arc( 20, -10, 8, 0, PI2, false );
+    graphics.arc(-20, -10, 8, 0, PI2, false);
+    graphics.arc(20, -10, 8, 0, PI2, false);
     graphics.fill();
 
     graphics.fillStyle = '#FFF';
     graphics.beginPath();
-    graphics.arc( -22, -12, 3, 0, PI2, false );
-    graphics.arc( 18, -12, 3, 0, PI2, false );
+    graphics.arc(-22, -12, 3, 0, PI2, false);
+    graphics.arc(18, -12, 3, 0, PI2, false);
     graphics.fill();
 
-    const shape = new stg.Shape( graphics );
+    const shape = new stg.Shape(graphics);
     shape.x = 150;
     shape.y = 150;
 
-    stage.addChild( shape );
+    stage.addChild(shape);
     stage.update();
 
-    document.getElementById( 'translate_x' ).addEventListener( 'input', ( event )=>{
-        shape.x = parseFloat( event.target.value );
-        stage.update();
+    document.getElementById('translate_x').addEventListener('input', (event) => {
+      shape.x = parseFloat(event.target.value);
+      stage.update();
     });
 
-    document.getElementById( 'translate_y' ).addEventListener( 'input', ( event )=>{
-        shape.y = parseFloat( event.target.value );
-        stage.update();
+    document.getElementById('translate_y').addEventListener('input', (event) => {
+      shape.y = parseFloat(event.target.value);
+      stage.update();
     });
 
-    document.getElementById( 'scale_x' ).addEventListener( 'input', ( event )=>{
-        shape.scaleX = parseFloat( event.target.value );
-        stage.update();
+    document.getElementById('scale_x').addEventListener('input', (event) => {
+      shape.scaleX = parseFloat(event.target.value);
+      stage.update();
     });
 
-    document.getElementById( 'scale_y' ).addEventListener( 'input', ( event )=>{
-        shape.scaleY = parseFloat( event.target.value );
-        stage.update();
+    document.getElementById('scale_y').addEventListener('input', (event) => {
+      shape.scaleY = parseFloat(event.target.value);
+      stage.update();
     });
 
-    document.getElementById( 'skew_x' ).addEventListener( 'input', ( event )=>{
-        shape.skewX = parseFloat( event.target.value );
-        stage.update();
+    document.getElementById('skew_x').addEventListener('input', (event) => {
+      shape.skewX = parseFloat(event.target.value);
+      stage.update();
     });
 
-    document.getElementById( 'skew_y' ).addEventListener( 'input', ( event )=>{
-        shape.skewY = parseFloat( event.target.value );
-        stage.update();
+    document.getElementById('skew_y').addEventListener('input', (event) => {
+      shape.skewY = parseFloat(event.target.value);
+      stage.update();
     });
 
-    document.getElementById( 'rotate' ).addEventListener( 'input', ( event )=>{
-        shape.rotate = parseFloat( event.target.value );
-        stage.update();
+    document.getElementById('rotate').addEventListener('input', (event) => {
+      shape.rotate = parseFloat(event.target.value);
+      stage.update();
     });
 
-</script>
+  </script>
 </body>
+
 </html>

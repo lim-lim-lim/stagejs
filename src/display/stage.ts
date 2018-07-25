@@ -118,6 +118,7 @@ export default class Stage extends DisplayContainer {
     const rect = this._canvas.getBoundingClientRect();
     this._canvas.addEventListener('click', event => {
       event.preventDefault();
+      if( !this._eventTargetMap[MouseEvent.CLICK] || this._eventTargetMap[MouseEvent.CLICK].length ){ return; }
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
       const color = this._eventContext.getImageData(x, y, 1, 1);

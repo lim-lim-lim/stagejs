@@ -4,6 +4,7 @@ import Rectangle from "../geom/rectangle";
 import Matrix from "../geom/matrix";
 import Stage from "./stage";
 
+//TODO: 파괴자 구현
 export default abstract class Display extends EventDispatcher {
 
   protected _stage: Stage = null;
@@ -17,13 +18,13 @@ export default abstract class Display extends EventDispatcher {
   protected _rotate: number = 0;
   protected _width: number = 0;
   protected _height: number = 0;
-  protected _scaleX: number = 0;
-  protected _scaleY: number = 0;
+  protected _scaleX: number = 1;
+  protected _scaleY: number = 1;
   protected _skewX: number = 0;
   protected _skewY: number = 0;
   protected _visible: boolean = true;
 
-  public get stage(): Stage { return this.stage; }
+  public get stage(): Stage { return this._stage; }
   public get parent(): DisplayContainer { return this._parent; }
   public get colorKey(): string { return this._colorKey; }
   public get x(): number { return this._bounds.left; }

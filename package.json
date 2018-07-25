@@ -4,6 +4,7 @@
   "description": "Javascript 2D graphics library",
   "main": "index.js",
   "scripts": {
+    "dev": "webpack --mode=development -w",
     "build": "webpack --mode=production",
     "test": "karma start"
   },
