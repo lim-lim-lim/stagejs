@@ -2,13 +2,13 @@
 export enum LineCap {
   BUTT = 'butt',
   ROUND = 'round',
-  SQUARE = 'square'
+  SQUARE = 'square',
 }
 
 export enum LineJoin {
   ROUNT = 'round',
   BEVEL = 'bevel',
-  MITER = 'miter'
+  MITER = 'miter',
 }
 
 enum DrawCommandName {
@@ -25,7 +25,7 @@ enum DrawCommandName {
   QUADRATIC_CURVE_TO = 'quadraticCurveTo',
   BEZIER_CURVE_TO = 'bezierCurveTo',
   FILL = 'fill',
-  STROKE = 'stroke'
+  STROKE = 'stroke',
 }
 
 interface DrawCommand {
@@ -36,7 +36,7 @@ interface DrawCommand {
   lineWidth: number;
   lineCap: LineCap;
   lineJoin: LineJoin;
-  miterLimit: number
+  miterLimit: number;
 }
 
 export default class Graphics {
@@ -46,7 +46,7 @@ export default class Graphics {
   public lineCap: LineCap = LineCap.BUTT;
   public lineJoin: LineJoin = LineJoin.MITER;
   public miterLimit: number = 0;
-  private _commands: Set<DrawCommand> = new Set()
+  private _commands: Set<DrawCommand> = new Set();
 
   public get commands(): Set<DrawCommand> { return this._commands; }
   public get commandList(): IterableIterator<DrawCommand> { return this._commands.values(); }
@@ -120,7 +120,7 @@ export default class Graphics {
       lineWidth: this.lineWidth,
       lineCap: this.lineCap,
       lineJoin: this.lineJoin,
-      miterLimit: this.miterLimit
+      miterLimit: this.miterLimit,
     });
   }
 }

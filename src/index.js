@@ -1,3 +1,0 @@
-
-
-const stg = window.stg || {};

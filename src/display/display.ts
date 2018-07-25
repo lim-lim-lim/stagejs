@@ -1,10 +1,10 @@
-import EventDispatcher from "../event/event-dispatcher";
-import DisplayContainer from "./display-container";
-import Rectangle from "../geom/rectangle";
-import Matrix from "../geom/matrix";
-import Stage from "./stage";
+import EventDispatcher from '../event/event-dispatcher';
+import Matrix from '../geom/matrix';
+import Rectangle from '../geom/rectangle';
+import DisplayContainer from './display-container';
+import Stage from './stage';
 
-//TODO: 파괴자 구현
+// TODO: 파괴자 구현
 export default abstract class Display extends EventDispatcher {
 
   protected _stage: Stage = null;
@@ -46,7 +46,7 @@ export default abstract class Display extends EventDispatcher {
     const bounds = this.bounds;
     const points = [bounds.leftTop, bounds.rightTop, bounds.leftBottom, bounds.rightBottom];
 
-    for (let item of points) {
+    for (const item of points) {
       item.rotate(this._rotate);
       item.skew(this._skewX, this._skewY);
     }
@@ -58,8 +58,6 @@ export default abstract class Display extends EventDispatcher {
     return this._computedBounds;
   }
 
-  public set colorKey(value: string) { this._colorKey = value; }
-
   public set stage(stage: Stage) {
     this._stage = stage;
     if (this._stage) {
@@ -68,6 +66,10 @@ export default abstract class Display extends EventDispatcher {
   }
 
   public set parent(parent: DisplayContainer) { this._parent = parent; }
+
+  public set colorKey(value: string) {
+    this._colorKey = value;
+  }
 
   public set x(value: number) {
     if (this._bounds.left === value) { return; }
@@ -104,7 +106,7 @@ export default abstract class Display extends EventDispatcher {
   }
 
   public set rotate(value: number) {
-    if (this._rotate == value) { return; }
+    if (this._rotate === value) { return; }
     this._rotate = value;
     this._changedDisplay();
   }
@@ -147,7 +149,7 @@ export default abstract class Display extends EventDispatcher {
     this.on(Stage.REMOVE_TO_STAGE, () => this.stage.unregisterEventMap(this));
   }
 
-  public abstract updateDisplay(context?: CanvasRenderingContext2D): void
+  public abstract updateDisplay(context?: CanvasRenderingContext2D): void;
 
   public updateTransformation(): void {
     this._matrix.reset();
@@ -163,7 +165,7 @@ export default abstract class Display extends EventDispatcher {
     this.stage.tempContext.transform(this._matrix.a, this._matrix.b, this._matrix.c, this._matrix.d, this._matrix.tx, this._matrix.ty);
   }
 
-  update() {
+  public update(): void {
     this.stage.context.save();
     this.stage.tempContext.save();
     this.updateTransformation();

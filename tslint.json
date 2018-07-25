@@ -5,6 +5,12 @@
     ],
     "jsRules": {},
     "rules": {
+        "object-literal-shorthand": false,
+        "object-literal-sort-keys":false,
+        "interface-name": [false],
+        "quotemark": [true, "single"],
+        "adjacent-overload-signatures": false,
+        "max-line-length": [false],
         "variable-name":[ true, "allow-leading-underscore" ]
     },
     "rulesDirectory": []

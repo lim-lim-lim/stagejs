@@ -1,13 +1,12 @@
-import Display from "./display";
-import Stage from "./stage";
-
+import Display from './display';
+import Stage from './stage';
 
 export default class DisplayContainer extends Display {
 
   private _children: Display[] = [];
 
   public get children(): Display[] {
-    return this._children
+    return this._children;
   }
 
   constructor() {
@@ -58,7 +57,7 @@ export default class DisplayContainer extends Display {
   }
 
   public updateDisplay(): void {
-    for (let child of this._children) {
+    for (const child of this._children) {
       if (child.visible) {
         child.update();
       }
