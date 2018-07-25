@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Ticker</title>
+  <style>
+    #container {
+      width: 650px;
+    }
+
+    #world {
+      float: left;
+      display: inline-block;
+      border: 1px solid gray;
+    }
+
+    .options {
+      float: left;
+      display: inline-block;
+      border: 1px solid gray;
+      width: 300px;
+      height: 300px;
+      font-size: 12px;
+    }
+
+    .options .options_container {
+      padding: 10px;
+    }
+
+    .options_container div {
+      margin-bottom: 5px;
+      height: 25px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Ticker</h1>
+  <div id="container">
+    <canvas id="world" width="300" height="300"></canvas>
+    <div class="options">
+      <div class="options_container">
+        <div>
+          <button id="btn_start">START</button>
+          <button id="btn_stop">STOP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../dist/stage.js"></script>
+  <script>
+    const stage = new stg.Stage('world');
+    const graphics = new stg.Graphics();
+    const PI2 = Math.PI * 2;
+    graphics.lineWidth = 5;
+
+    graphics.strokeStyle = '#903';
+    graphics.fillStyle = '#F08';
+
+    graphics.beginPath();
+    graphics.arc(0, 0, 50, 0, PI2, false);
+    graphics.stroke();
+    graphics.fill();
+
+    graphics.strokeStyle = '#903';
+    graphics.beginPath();
+    graphics.arc(-20, -25, 8, Math.PI, 0, false);
+    graphics.stroke();
+
+    graphics.beginPath();
+    graphics.arc(20, -25, 8, Math.PI, 0, false);
+    graphics.stroke();
+
+    graphics.beginPath();
+    graphics.arc(0, 15, 20, Math.PI, 0, true);
+    graphics.stroke();
+
+    graphics.fillStyle = '#903';
+    graphics.beginPath();
+    graphics.arc(-20, -10, 8, 0, PI2, false);
+    graphics.arc(20, -10, 8, 0, PI2, false);
+    graphics.fill();
+
+    graphics.fillStyle = '#FFF';
+    graphics.beginPath();
+    graphics.arc(-22, -12, 3, 0, PI2, false);
+    graphics.arc(18, -12, 3, 0, PI2, false);
+    graphics.fill();
+
+    const shape = new stg.Shape(graphics);
+    shape.x = 150;
+    shape.y = 150;
+
+    stage.addChild(shape);
+    stage.update();
+
+    const ticker = new stg.Ticker(40);
+    let scaleValue = 0.1;
+    ticker.on(stg.Ticker.TICK, () => {
+      shape.rotate += 0.01;
+      shape.scaleX = shape.scaleY += scaleValue;
+      if (shape.scaleX > 5) {
+        shape.scaleX = shape.scaleY = 5;
+        scaleValue *= -1;
+      }
+      else if (shape.scaleX < 0.2) {
+        shape.scaleX = shape.scaleY = 0.2;
+        scaleValue *= -1;
+      }
+      stage.update();
+    });
+
+    document.getElementById('btn_start').addEventListener('click', () => {
+      ticker.run();
+    });
+
+    document.getElementById('btn_stop').addEventListener('click', () => {
+      ticker.stop();
+    });
+
+  </script>
+</body>
+
+</html>
