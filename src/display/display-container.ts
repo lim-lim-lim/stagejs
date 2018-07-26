@@ -20,7 +20,6 @@ export default class DisplayContainer extends Display {
     }
     this._children.push(child);
     child.stage = this.stage;
-    child.colorKey = this.stage.createColorKey();
     child.parent = this;
     this.stage.changed = true;
     child.trigger(Stage.ADD_TO_STAGE);
@@ -37,8 +36,6 @@ export default class DisplayContainer extends Display {
     if (index === -1) { return; }
     child.trigger(Stage.REMOVE_TO_STAGE);
     this._children.splice( index, 1 );
-    this.stage.returnColorKey(child.colorKey);
-    child.colorKey = null;
     child.stage = null;
     child.parent = null;
     if (child instanceof DisplayContainer) {

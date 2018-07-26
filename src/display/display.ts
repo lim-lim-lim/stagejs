@@ -12,7 +12,6 @@ export default abstract class Display extends EventDispatcher {
   protected _bounds: Rectangle = new Rectangle();
   protected _computedBounds: Rectangle = new Rectangle();
   protected _matrix: Matrix = new Matrix();
-  protected _colorKey: string = null;
   protected _centerX: number = 0;
   protected _centerY: number = 0;
   protected _rotate: number = 0;
@@ -26,7 +25,6 @@ export default abstract class Display extends EventDispatcher {
 
   public get stage(): Stage { return this._stage; }
   public get parent(): DisplayContainer { return this._parent; }
-  public get colorKey(): string { return this._colorKey; }
   public get x(): number { return this._bounds.left; }
   public get y(): number { return this._bounds.top; }
   public get centerX(): number { return this._centerX; }
@@ -66,10 +64,6 @@ export default abstract class Display extends EventDispatcher {
   }
 
   public set parent(parent: DisplayContainer) { this._parent = parent; }
-
-  public set colorKey(value: string) {
-    this._colorKey = value;
-  }
 
   public set x(value: number) {
     if (this._bounds.left === value) { return; }
@@ -162,22 +156,15 @@ export default abstract class Display extends EventDispatcher {
     this._transformScale(this._scaleX, this._scaleY);
     this._transformSkew(this._skewX, this._skewY);
     this.stage.context.transform(this._matrix.a, this._matrix.b, this._matrix.c, this._matrix.d, this._matrix.tx, this._matrix.ty);
-    this.stage.tempContext.transform(this._matrix.a, this._matrix.b, this._matrix.c, this._matrix.d, this._matrix.tx, this._matrix.ty);
   }
 
   public update(): void {
     this.stage.context.save();
-    this.stage.tempContext.save();
     this.updateTransformation();
     this.updateDisplay(this.stage.context);
-    this.updateDisplay(this.stage.tempContext);
     this.stage.context.restore();
-    this.stage.tempContext.restore();
-    this.stage.tempContext.globalCompositeOperation = 'source-in';
-    this.stage.tempContext.fillStyle = '#' + this.colorKey;
-    this.stage.tempContext.fillRect(0, 0, this.stage.tempCanvas.width, this.stage.tempCanvas.height);
-    this.stage.eventContext.drawImage(this.stage.tempCanvas, 0, 0);
-    this.stage.tempCanvas.width = this.stage.tempCanvas.width;
+    // TODO: eventcontext 수정
+    // this.stage.eventContext.drawImage(this.stage.tempCanvas, 0, 0);
   }
 
   private _transformTranslate(x: number = 0, y: number = 0): void {
