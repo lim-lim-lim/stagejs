@@ -113,3 +113,24 @@ export default class Stage extends DisplayContainer {
     // });
   }
 }
+
+export class StageRegion {
+
+  private _width: number = 0;
+  private _height: number = 0;
+  private _row: number = 0;
+  private _col: number = 0;
+  private _map: any = {};
+  private _displayList: Display[] = [];
+
+  constructor(width: number, height: number, col: number, row: number) {
+    this._width = width;
+    this._height = height;
+    this._col = col;
+    this._row = row;
+  }
+
+  public add(display: Display): void {
+  // ..
+  }
+}
