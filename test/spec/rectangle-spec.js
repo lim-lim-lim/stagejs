@@ -120,5 +120,58 @@ describe('[ Rectangle Test ]', () => {
     const rect2 = new stg.Rectangle(200, 200, 50, 50);
     rect1.extends(rect2);
     expect(rect1).toEqualRectangle(100, 100, 150, 150);
+
+    const rect3 = new stg.Rectangle(100, 100, 100, 100);
+    const rect4 = new stg.Rectangle(0, 0, 50, 50);
+    rect3.extends(rect4);
+    expect(rect3).toEqualRectangle(0, 0, 200, 200);
+
+    const rect5 = new stg.Rectangle(100, 100, 100, 100);
+    const rect6 = new stg.Rectangle(150, 0, 100, 100);
+    rect5.extends(rect6);
+    expect(rect5).toEqualRectangle(100, 0, 150, 200);
+
+    const rect7 = new stg.Rectangle(100, 100, 100, 100);
+    const rect8 = new stg.Rectangle(0, 150, 100, 100);
+    rect7.extends(rect8);
+    expect(rect7).toEqualRectangle(0, 100, 200, 150);
+  });
+
+  it('extendsValue 메서드는 입려된 x,y,width,height를 포함하는 값으로 갱신한다.', () => { 
+    const rect1 = new stg.Rectangle(100, 100, 100, 100);
+    rect1.extendsValue( 200, 200, 50, 50 );
+    expect(rect1).toEqualRectangle(100, 100, 150, 150);
+
+    const rect2 = new stg.Rectangle(100, 100, 100, 100);
+    rect2.extendsValue( 0, 0, 50, 50 ); 
+    expect(rect2).toEqualRectangle(0, 0, 200, 200);
+  });
+
+  it('extendsPoint 메서드는 입려된 point를 포함하는 값으로 갱신한다.', () => {
+    const rect1 = new stg.Rectangle(100, 100, 100, 100);
+    rect1.extendsPoint( new stg.Point( 250, 250) );
+    expect(rect1).toEqualRectangle(100, 100, 150, 150);
+
+    const rect2 = new stg.Rectangle(100, 100, 100, 100);
+    rect2.extendsPoint( new stg.Point( 0, 0) );
+    expect(rect2).toEqualRectangle(0, 0, 200, 200);
+
+    const rect3 = new stg.Rectangle(100, 100, 100, 100);
+    rect3.extendsPoint( new stg.Point( 250, 0) );
+    expect(rect3).toEqualRectangle(100, 0, 150, 200);
+
+    const rect4 = new stg.Rectangle(100, 100, 100, 100);
+    rect4.extendsPoint( new stg.Point( 0, 250) );
+    expect(rect4).toEqualRectangle(0, 100, 200, 150);
+  });
+
+  it('extendsPosition 메서드는 입려된 x,y좌표를 포함하는 값으로 갱신한다.', () => {
+    const rect1 = new stg.Rectangle(100, 100, 100, 100);
+    rect1.extendsPosition( 250, 250 );
+    expect(rect1).toEqualRectangle(100, 100, 150, 150);
+
+    const rect2 = new stg.Rectangle(100, 100, 100, 100);
+    rect2.extendsPosition( 0, 0 );
+    expect(rect2).toEqualRectangle(0, 0, 200, 200);
   });
 });

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Event</title>
+  <style>
+    #container {
+      position: relative;
+    }
+
+    #container .msg{
+      padding: 5px; 
+    }
+
+    #stage {
+      position: absolute;
+      border: 1px solid gray; 
+      top: 0px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <canvas id="stage" width="300" height="300"></canvas>
+  </div>
+
+  <script src="../dist/stage.js"></script>
+  <script>
+    const stage = new stg.Stage('stage');
+    const graphics = new stg.Graphics();
+    const shape = new stg.Shape(graphics);    
+    graphics.fillStyle = '#DDD';
+    graphics.beginPath();
+    graphics.fillRect( 0, 0, 100, 100 );
+    stage.addChild(shape);
+    shape.x = 100;
+    shape.y = 100
+
+    const graphics2 = new stg.Graphics();
+    const bounds = graphics.bounds;
+    graphics2.strokeStyle = '#A00';
+    graphics2.strokeRect( bounds.x, bounds.y, bounds.width, bounds.height );
+    const shape2 = new stg.Shape(graphics2);    
+    stage.addChild(shape2);
+
+    stage.update();
+
+  </script>
+</body>
+
+</html>

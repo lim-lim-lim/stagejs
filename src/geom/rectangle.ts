@@ -135,6 +135,34 @@ export default class Rectangle {
     this.bottom = bottom;
   }
 
+  public extendsValue(x: number, y: number, width: number, height: number): void {
+    const left: number = Math.min(this.left, x);
+    const right: number = Math.max(this.right, x + width);
+    const top: number = Math.min(this.top, y);
+    const bottom: number = Math.max(this.bottom, y + height);
+    this.left = left;
+    this.right = right;
+    this.top = top;
+    this.bottom = bottom;
+  }
+
+  public extendsPoint(point: Point): void {
+    this.extendsPosition(point.x, point.y);
+  }
+
+  public extendsPosition(x: number, y: number): void {
+    if (this.left >= x) {
+      this.left = x;
+    } else if (this.right <= x) {
+      this.right = x;
+    }
+    if (this.top >= y) {
+      this.top = y;
+    } else if (this.bottom <= y) {
+      this.bottom = y;
+    }
+  }
+
   public setTo(x: number, y: number, width: number, height: number): void {
     this.x = x;
     this.y = y;

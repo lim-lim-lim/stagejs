@@ -1,3 +1,4 @@
+import Rectangle from '../geom/rectangle';
 
 export enum LineCap {
   BUTT = 'butt',
@@ -47,19 +48,27 @@ export default class Graphics {
   public lineJoin: LineJoin = LineJoin.MITER;
   public miterLimit: number = 0;
   private _commands: Set<DrawCommand> = new Set();
+  private _x: number = 0;
+  private _y: number = 0;
+  private _bounds: Rectangle = new Rectangle();
 
   public get commands(): Set<DrawCommand> { return this._commands; }
   public get commandList(): IterableIterator<DrawCommand> { return this._commands.values(); }
+  public get bounds(): Rectangle { return this._bounds; }
 
   public rect(x: number, y: number, width: number, height: number): void {
+    this._bounds.extends(new Rectangle(x, y, width, height));
     this._addCommand(DrawCommandName.RECT, arguments);
   }
 
   public fillRect(x: number, y: number, width: number, height: number): void {
+    this._bounds.extends(new Rectangle(x, y, width, height));
     this._addCommand(DrawCommandName.FILL_RECT, arguments);
   }
 
   public strokeRect(x: number, y: number, width: number, height: number): void {
+    const lineWidth: number = this.lineWidth * 2;
+    this._bounds.extends(new Rectangle(x, y, width + lineWidth, height + lineWidth));
     this._addCommand(DrawCommandName.STROKE_RECT, arguments);
   }
 
@@ -76,14 +85,20 @@ export default class Graphics {
   }
 
   public moveTo(x: number, y: number): void {
+    this._x = x;
+    this._y = y;
     this._addCommand(DrawCommandName.MOVE_TO, arguments);
   }
 
   public lineTo(x: number, y: number): void {
+    this._bounds.extendsPosition(this._x, this._y);
+    this._bounds.extendsPosition(x, y);
+    this._x = x;
+    this._y = y;
     this._addCommand(DrawCommandName.LINE_TO, arguments);
   }
 
-  public arc(x: number, y: number, radius: number, startAngle: number, endAngle: number, anticlockwise: boolean): void {
+  public arc(x: number, y: number, radius: number, startAngle: number, endAngle: number, anticlockwise: boolean = false): void {
     this._addCommand(DrawCommandName.ARC, arguments);
   }
 
