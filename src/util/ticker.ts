@@ -1,19 +1,19 @@
-import EventDispatcher from "../event/event-dispatcher";
+import EventDispatcher from '../event/event-dispatcher';
 
 enum TickerState {
   READY = 'ready',
-  RUNNING = 'running'
+  RUNNING = 'running',
 }
 
 enum TickerEvent {
-  TICK = 'tick'
+  TICK = 'tick',
 }
 
 const _oneSec: number = 1000;
 
 export default class Ticker extends EventDispatcher {
 
-  public static readonly TICK: TickerEvent = TickerEvent.TICK
+  public static readonly TICK: TickerEvent = TickerEvent.TICK;
 
   private _fps: number = 0;
   private _state: TickerState = TickerState.READY;
@@ -24,7 +24,7 @@ export default class Ticker extends EventDispatcher {
 
   public set fps(value: number) {
     this._fps = Math.max(value, 1);
-    //TODO: 로직 확인
+    // TODO: 로직 확인
     if (value > 0 && value < 1) {
       this._internalTime = (_oneSec * value);
     } else {
