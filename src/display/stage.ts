@@ -27,7 +27,6 @@ export default class Stage extends DisplayContainer {
   private _eventContext: CanvasRenderingContext2D = null;
   private _ticker: Ticker = null;
   private _eventTargetMap: EventTargetMap = {};
-  private _startColor = 0;
 
   constructor(canvasId: string, fps: number) {
     super();
