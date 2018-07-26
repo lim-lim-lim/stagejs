@@ -79,7 +79,7 @@ export default class SpriteSheet extends EventDispatcher {
 
   private _updateBounds(): void {
     const currentFrame = this._frames[this._frameIndex];
-    this._currentBounds.left = currentFrame[0] * this._cellWidth;
-    this._currentBounds.top = currentFrame[1] * this._cellHeight;
+    this._currentBounds.x = currentFrame[0] * this._cellWidth;
+    this._currentBounds.y = currentFrame[1] * this._cellHeight;
   }
 }

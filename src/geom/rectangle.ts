@@ -9,6 +9,8 @@ export default class Rectangle {
   private _leftBottom: Point = null;
   private _rightBottom: Point = null;
 
+  public get x(): number { return this._leftTop.x; }
+  public get y(): number { return this._leftTop.y; }
   public get width(): number { return this._width; }
   public get height(): number { return this._height; }
   public get left(): number { return this._leftTop.x; }
@@ -19,6 +21,18 @@ export default class Rectangle {
   public get rightTop(): Point { return this._rightTop; }
   public get leftBottom(): Point { return this._leftBottom; }
   public get rightBottom(): Point { return this._rightBottom; }
+
+  public set x(value: number) {
+    this._leftTop.x = value;
+    this._leftBottom.x = value;
+    this._updateRight();
+  }
+
+  public set y(value: number) {
+    this._leftTop.y = value;
+    this._leftBottom.y = value;
+    this._updateBottom();
+  }
 
   public set width(value: number) {
     this._width = value;
@@ -122,8 +136,8 @@ export default class Rectangle {
   }
 
   public setTo(x: number, y: number, width: number, height: number): void {
-    this.left = x;
-    this.top = y;
+    this.x = x;
+    this.y = y;
     this.width = width;
     this.height = height;
   }

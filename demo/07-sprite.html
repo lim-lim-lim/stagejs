@@ -10,14 +10,11 @@
     }
 
     #stage {
-      float: left;
-      display: inline-block;
       border: 1px solid gray;
     }
 
     .options {
       float: left;
-      display: inline-block;
       border: 1px solid gray;
       width: 300px;
       height: 300px;
@@ -74,15 +71,15 @@
     img.src = './assets/sprite.png';
 
     const spriteSheetList = [
-      new stg.SpriteSheet(img, 144, 144, [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]]),
-      new stg.SpriteSheet(img, 144, 144, [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1]]),
-      new stg.SpriteSheet(img, 144, 144, [[0, 2], [1, 2], [2, 2], [3, 2], [4, 2], [5, 2]]),
-      new stg.SpriteSheet(img, 144, 144, [[0, 3], [1, 3], [2, 3], [3, 3], [4, 3]])
+      new stg.SpriteSheet(img, 144, 144, [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]], true),
+      new stg.SpriteSheet(img, 144, 144, [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1]], true),
+      new stg.SpriteSheet(img, 144, 144, [[0, 2], [1, 2], [2, 2], [3, 2], [4, 2], [5, 2]], true),
+      new stg.SpriteSheet(img, 144, 144, [[0, 3], [1, 3], [2, 3], [3, 3], [4, 3]], true)
     ];
 
     const sprite = new stg.Sprite(spriteSheetList[2], 10);
-    sprite.x = 200;
-    sprite.y = 200;
+    sprite.x = 80;
+    sprite.y = 60;
 
 
     stage.addChild(sprite);
@@ -91,6 +88,7 @@
 
 
     document.getElementById('btn_start').addEventListener('click', () => {
+      sprite.reset();
       sprite.play();
     });
 

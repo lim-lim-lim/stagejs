@@ -13,7 +13,7 @@ describe('[ Rectangle Test ]', () => {
             result.pass = true;
             matrixPropList.forEach((item, index) => {
               if (actual[item] !== rectangleProp[index]) {
-                result.message += item + ' 값이 일치하지 않습니다. ( 소스 값 : ' + actual[item] + ', 테스트 값 : ' + rectangleProp[index] + ' ) \n';
+                result.message += item + ' 값이 일치하지 않습니다. ( 입력 값 : ' + actual[item] + ', 기대 값 : ' + rectangleProp[index] + ' ) \n';
                 result.pass = false;
               }
             });
@@ -29,7 +29,19 @@ describe('[ Rectangle Test ]', () => {
     expect(rect).toEqualRectangle(0, 0, 0, 0);
   });
 
-  it('left 속성은 x과 width 값을 갱신한다.', () => {
+  it('x 속성은 x 위치를 이동시키며 사이즈를 갱신하지 않는다.', () => {
+    const rect = new stg.Rectangle(100, 100, 100, 100);
+    rect.x = 80;
+    expect(rect).toEqualRectangle(80, 100, 100, 100);
+  });
+
+  it('y 속성은 y 위치를 이동시키며 사이즈를 갱신하지 않는다.', () => {
+    const rect = new stg.Rectangle(100, 100, 100, 100);
+    rect.y = 80;
+    expect(rect).toEqualRectangle(100, 80, 100, 100);
+  });
+
+  it('left 속성은 x값과 width 값을 갱신한다.', () => {
     const rect = new stg.Rectangle(100, 100, 100, 100);
     rect.left = 80;
     expect(rect).toEqualRectangle(80, 100, 120, 100);
@@ -41,7 +53,7 @@ describe('[ Rectangle Test ]', () => {
     expect(rect).toEqualRectangle(100, 100, 120, 100);
   });
 
-  it('top 속성은 y과 height 값을 갱신한다.', () => {
+  it('top 속성은 y값과 height 값을 갱신한다.', () => {
     const rect = new stg.Rectangle(100, 100, 100, 100);
     rect.top = 80;
     expect(rect).toEqualRectangle(100, 80, 100, 120);

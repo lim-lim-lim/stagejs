@@ -6,13 +6,17 @@
   <title>Mouse Event</title>
   <style>
     #container {
-      width: 650px;
+      position: relative;
+    }
+
+    #container .msg{
+      padding: 5px; 
     }
 
     #stage {
-      float: left;
-      display: inline-block;
-      border: 1px solid gray;
+      position: absolute;
+      border: 1px solid gray; 
+      top: 0px;
     }
   </style>
 </head>
@@ -20,6 +24,7 @@
 <body>
   <h1>Mouse Event</h1>
   <div id="container">
+    <p class="msg">click!!</p>  
     <canvas id="stage" width="300" height="300"></canvas>
   </div>
 

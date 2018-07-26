@@ -30,6 +30,7 @@ export default class Stage extends DisplayContainer {
   private _returnedColorKey: string[] = [];
   private _ticker: Ticker = null;
   private _eventTargetMap: EventTargetMap = {};
+  private _startColor = 0;
 
   constructor(canvasId: string, fps: number) {
     super();
@@ -37,7 +38,7 @@ export default class Stage extends DisplayContainer {
     this._context = this._canvas.getContext('2d');
     this._stage = this;
     this._bounds = new Rectangle(0, 0, this._canvas.width, this._canvas.height);
-    this._colorKey = this.createColorKey();
+    
     this._initFPS(fps);
     this._initEventCanvas();
     this._initEvent();
@@ -54,7 +55,7 @@ export default class Stage extends DisplayContainer {
     if (this._returnedColorKey.length) {
       return this._returnedColorKey.shift();
     }
-    let value = Number(this._colorKey += 10).toString(16);
+    let value = Number(this._startColor += 10).toString(16);
     value = '0'.repeat(6 - value.length) + value;
     return value;
   }
@@ -117,7 +118,8 @@ export default class Stage extends DisplayContainer {
     const rect = this._canvas.getBoundingClientRect();
     this._canvas.addEventListener('click', (event) => {
       event.preventDefault();
-      if (!this._eventTargetMap[MouseEvent.CLICK] || this._eventTargetMap[MouseEvent.CLICK].length) { return; }
+      console.log( !this._eventTargetMap[MouseEvent.CLICK] )
+      if (!this._eventTargetMap[MouseEvent.CLICK] || !this._eventTargetMap[MouseEvent.CLICK].length) { return; }
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
       const color = this._eventContext.getImageData(x, y, 1, 1);
@@ -127,6 +129,7 @@ export default class Stage extends DisplayContainer {
       const colorKey = '0'.repeat(2 - r.length) + r + '0'.repeat(2 - g.length) + g + '0'.repeat(2 - b.length) + b;
       for (let i = this._eventTargetMap[MouseEvent.CLICK].length - 1, count = 0; i >= count; i -= 1) {
         const item = this._eventTargetMap[MouseEvent.CLICK][i];
+        console.log( colorKey, item.colorKey );
         if (colorKey === item.colorKey) {
           // TODO:target / currentTarget 구분
           item.trigger(MouseEvent.CLICK, new MouseEvent(MouseEvent.CLICK, {}, item, item));

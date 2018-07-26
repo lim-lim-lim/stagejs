@@ -36,7 +36,7 @@ export default class DisplayContainer extends Display {
     const index = this._children.indexOf(child);
     if (index === -1) { return; }
     child.trigger(Stage.REMOVE_TO_STAGE);
-    this.removeChildAt(index);
+    this._children.splice( index, 1 );
     this.stage.returnColorKey(child.colorKey);
     child.colorKey = null;
     child.stage = null;

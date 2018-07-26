@@ -13,24 +13,7 @@ describe('[ Matrix Test ]', () => {
             result.pass = true;
             matrixPropList.forEach((item, index) => {
               if (actual[item] !== matrixProp[index]) {
-                result.message += item + ' 값이 일치하지 않습니다. ( 소스 값 : ' + actual[item] + ', 테스트 값 : ' + matrixProp[index] + ' ) \n';
-                result.pass = false;
-              }
-            });
-            return result;
-          }
-        }
-      },
-
-      toEqualMatrix2: () => {
-        return {
-          compare: (actual, ...matrixProp) => {
-            const result = {};
-            result.message = '';
-            result.pass = true;
-            matrixPropList.forEach((item, index) => {
-              if (actual[item] !== matrixProp[index]) {
-                result.message += item + ' 값이 일치하지 않습니다. ( 소스 값 : ' + actual[item] + ', 테스트 값 : ' + matrixProp[index] + ' ) \n';
+                result.message += item + ' 값이 일치하지 않습니다. ( 입력 값 : ' + actual[item] + ', 기대 값 : ' + matrixProp[index] + ' ) \n';
                 result.pass = false;
               }
             });
@@ -63,12 +46,12 @@ describe('[ Matrix Test ]', () => {
     let matrix1 = new stg.Matrix(1, 2, 3, 4, 5, 6);
     let matrix2 = matrix1.clone();
     matrix1.multi(matrix2.inverse());
-    expect( matrix1 ).toEqualMatrix2(1, 0, 0, 1, 0, 0);
+    expect( matrix1 ).toEqualMatrix(1, 0, 0, 1, 0, 0);
 
     matrix1 = new stg.Matrix(1, 0, 2, 1, 3, 5);
     matrix2 = matrix1.clone();
     matrix1.multi(matrix2.inverse());
-    expect(matrix1).toEqualMatrix2(1, 0, 0, 1, 0, 0);
+    expect(matrix1).toEqualMatrix(1, 0, 0, 1, 0, 0);
   });
 
   it('translate 메서드는 이동 변환 행렬을 적용 한다.', () => {
