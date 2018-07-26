@@ -38,7 +38,12 @@ export default class Matrix {
   }
 
   public multi(matrix: Matrix): void {
-    let a: number, b: number, c: number, d: number, tx: number, ty: number;
+    let a: number;
+    let b: number;
+    let c: number;
+    let d: number;
+    let tx: number;
+    let ty: number;
 
     if (typeof matrix === 'number') {
       a = this.a * matrix;

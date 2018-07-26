@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "webpack --mode=development -w",
     "build": "webpack --mode=production",
-    "test": "karma start"
+    "test": "karma start",
+    "lint": "tslint -p tsconfig.json"
   },
   "repository": {
     "type": "git",

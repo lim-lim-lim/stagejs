@@ -38,7 +38,6 @@ export default class Stage extends DisplayContainer {
     this._context = this._canvas.getContext('2d');
     this._stage = this;
     this._bounds = new Rectangle(0, 0, this._canvas.width, this._canvas.height);
-    
     this._initFPS(fps);
     this._initEventCanvas();
     this._initEvent();
@@ -118,7 +117,6 @@ export default class Stage extends DisplayContainer {
     const rect = this._canvas.getBoundingClientRect();
     this._canvas.addEventListener('click', (event) => {
       event.preventDefault();
-      console.log( !this._eventTargetMap[MouseEvent.CLICK] )
       if (!this._eventTargetMap[MouseEvent.CLICK] || !this._eventTargetMap[MouseEvent.CLICK].length) { return; }
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
@@ -129,7 +127,6 @@ export default class Stage extends DisplayContainer {
       const colorKey = '0'.repeat(2 - r.length) + r + '0'.repeat(2 - g.length) + g + '0'.repeat(2 - b.length) + b;
       for (let i = this._eventTargetMap[MouseEvent.CLICK].length - 1, count = 0; i >= count; i -= 1) {
         const item = this._eventTargetMap[MouseEvent.CLICK][i];
-        console.log( colorKey, item.colorKey );
         if (colorKey === item.colorKey) {
           // TODO:target / currentTarget 구분
           item.trigger(MouseEvent.CLICK, new MouseEvent(MouseEvent.CLICK, {}, item, item));

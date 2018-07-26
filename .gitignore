@@ -60,5 +60,4 @@ typings/
 /node_modules/
 /.idea/
 /src/*.js
-package-lock.json
 .vscode
