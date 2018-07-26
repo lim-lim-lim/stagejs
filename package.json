@@ -4,7 +4,9 @@
   "description": "Javascript 2D graphics library",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack --mode=development -w",
+    "build": "webpack --mode=production",
+    "test": "karma start"
   },
   "repository": {
     "type": "git",
@@ -17,17 +19,17 @@
   },
   "homepage": "https://github.com/lim-lim-lim/stagejs#readme",
   "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-cli": "^1.2.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-jshint": "^1.1.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-karma": "^2.0.0",
-    "jasmine-core": "^2.5.2",
-    "karma": "^1.5.0",
-    "karma-chrome-launcher": "^2.0.0",
-    "karma-firefox-launcher": "^1.0.1",
-    "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.2"
+    "jasmine-core": "^2.99.1",
+    "karma": "^1.7.1",
+    "karma-jasmine": "^1.1.2",
+    "karma-phantomjs-launcher": "^1.0.4"
+  },
+  "dependencies": {
+    "karma-chrome-launcher": "^2.2.0",
+    "ts-loader": "^4.4.2",
+    "tslint": "^5.11.0",
+    "typescript": "^2.9.2",
+    "webpack": "^4.16.2",
+    "webpack-cli": "^3.1.0"
   }
 }
