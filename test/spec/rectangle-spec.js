@@ -3,7 +3,7 @@ describe('[ Rectangle Test ]', () => {
   "use strict";
 
   beforeEach(() => {
-    const matrixPropList = ['left', 'top', 'width', 'height'];
+    const rectanglePropList = ['left', 'top', 'width', 'height'];
     jasmine.addMatchers({
       toEqualRectangle: () => {
         return {
@@ -11,7 +11,7 @@ describe('[ Rectangle Test ]', () => {
             const result = {};
             result.message = '';
             result.pass = true;
-            matrixPropList.forEach((item, index) => {
+            rectanglePropList.forEach((item, index) => {
               if (actual[item] !== rectangleProp[index]) {
                 result.message += item + ' 값이 일치하지 않습니다. ( 입력 값 : ' + actual[item] + ', 기대 값 : ' + rectangleProp[index] + ' ) \n';
                 result.pass = false;

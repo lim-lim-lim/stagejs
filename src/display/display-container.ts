@@ -1,5 +1,6 @@
 import Display from './display';
 import Stage from './stage';
+import Rectangle from 'geom/rectangle';
 
 export default class DisplayContainer extends Display {
 
@@ -7,6 +8,11 @@ export default class DisplayContainer extends Display {
 
   public get children(): Display[] {
     return this._children;
+  }
+
+  public get bounds(): Rectangle {
+    this._updateBounds();
+    return this._bounds;
   }
 
   constructor() {
@@ -22,6 +28,7 @@ export default class DisplayContainer extends Display {
     child.stage = this.stage;
     child.parent = this;
     this.stage.changed = true;
+    this._updateBounds();
     child.trigger(Stage.ADD_TO_STAGE);
   }
 
@@ -35,9 +42,10 @@ export default class DisplayContainer extends Display {
     const index = this._children.indexOf(child);
     if (index === -1) { return; }
     child.trigger(Stage.REMOVE_TO_STAGE);
-    this._children.splice( index, 1 );
+    this._children.splice(index, 1);
     child.stage = null;
     child.parent = null;
+    this.stage.changed = true;
     if (child instanceof DisplayContainer) {
       (child as DisplayContainer).removeChildAll();
     }
@@ -59,5 +67,17 @@ export default class DisplayContainer extends Display {
         child.update();
       }
     }
+  }
+
+  private _updateBounds(): void {
+    this.width = 0;
+    this.height = 0;
+    const tempX: number = this.x;
+    const tempY: number = this.y;
+    for (const child of this._children) {
+      this._bounds.extends(child.bounds);
+    }
+    this.x = tempX;
+    this.y = tempY;
   }
 }

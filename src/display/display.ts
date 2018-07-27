@@ -25,8 +25,8 @@ export default abstract class Display extends EventDispatcher {
 
   public get stage(): Stage { return this._stage; }
   public get parent(): DisplayContainer { return this._parent; }
-  public get x(): number { return this._bounds.left; }
-  public get y(): number { return this._bounds.top; }
+  public get x(): number { return this._bounds.x; }
+  public get y(): number { return this._bounds.y; }
   public get centerX(): number { return this._centerX; }
   public get centerY(): number { return this._centerY; }
   public get width(): number { return this._bounds.width; }
@@ -67,13 +67,13 @@ export default abstract class Display extends EventDispatcher {
 
   public set x(value: number) {
     if (this._bounds.left === value) { return; }
-    this._bounds.left = value;
+    this._bounds.x = value;
     this._changedDisplay();
   }
 
   public set y(value: number) {
     if (this._bounds.top === value) { return; }
-    this._bounds.top = value;
+    this._bounds.y = value;
     this._changedDisplay();
   }
 

@@ -29,24 +29,43 @@
   <script src="../dist/stage.js"></script>
   <script>
     const stage = new stg.Stage('stage');
+    const container = new stg.DisplayContainer();
+    stage.addChild( container );
+    container.x = 10;
+    container.y = 10;
+
     const graphics = new stg.Graphics();
-    const shape = new stg.Shape(graphics);    
     graphics.fillStyle = '#DDD';
-    graphics.beginPath();
     graphics.fillRect( 0, 0, 100, 100 );
-    stage.addChild(shape);
-    shape.x = 100;
-    shape.y = 100
+
+    const shape1 = new stg.Shape(graphics);    
+    shape1.x = 100;
+    shape1.y = 110;
+    shape1.scaleX = 1.5;
+    container.addChild(shape1);
+
+    const shape2 = new stg.Shape(graphics);    
+    shape2.x = 0;
+    shape2.y = 0
+    container.addChild(shape2);
+
 
     const graphics2 = new stg.Graphics();
-    const bounds = graphics.bounds;
-    graphics2.strokeStyle = '#A00';
-    graphics2.strokeRect( bounds.x, bounds.y, bounds.width, bounds.height );
-    const shape2 = new stg.Shape(graphics2);    
-    stage.addChild(shape2);
+    graphics2.fillStyle = '#999';
+    graphics2.fillRect( 0, 0, 50, 50 );
+    const shape3 = new stg.Shape(graphics2);    
+    shape3.x = 0;
+    shape3.y = 200;
+    container.addChild(shape3);
 
+    const boundsGraphics = new stg.Graphics();
+    const bounds = container.bounds;
+    boundsGraphics.strokeStyle = 'red';
+    boundsGraphics.strokeRect( bounds.x, bounds.y, bounds.width, bounds.height );
+    const boundsShape = new stg.Shape(boundsGraphics);    
+    stage.addChild(boundsShape);
     stage.update();
-
+    
   </script>
 </body>
 

@@ -28,15 +28,24 @@ export default class Stage extends DisplayContainer {
   private _ticker: Ticker = null;
   private _eventTargetMap: EventTargetMap = {};
 
-  constructor(canvasId: string, fps: number) {
+  constructor(canvas: HTMLCanvasElement | string, fps: number, renderOnly: boolean = true) {
     super();
-    this._canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+    if (canvas instanceof HTMLCanvasElement) {
+      this._canvas = canvas;
+    } else {
+      this._canvas = document.getElementById(canvas) as HTMLCanvasElement;
+    }
+
     this._context = this._canvas.getContext('2d');
     this._stage = this;
     this._bounds = new Rectangle(0, 0, this._canvas.width, this._canvas.height);
     this._initFPS(fps);
-    this._initEventCanvas();
-    this._initEvent();
+
+    if (!renderOnly) {
+      this._initEventCanvas();
+      this._initEvent();
+      this._initStageRegion();
+    }
   }
 
   public get canvas(): HTMLCanvasElement { return this._canvas; }
@@ -47,7 +56,7 @@ export default class Stage extends DisplayContainer {
   public update(): void {
     if (this.changed) {
       this._canvas.width = this._canvas.width;
-      this._eventCanvas.width = this._eventCanvas.width;
+      // this._eventCanvas.width = this._eventCanvas.width;
       super.update();
       this.changed = false;
     }
@@ -112,6 +121,10 @@ export default class Stage extends DisplayContainer {
     //   }
     // });
   }
+
+  private _initStageRegion(): void {
+    //
+  }
 }
 
 export class StageRegion {
@@ -131,6 +144,6 @@ export class StageRegion {
   }
 
   public add(display: Display): void {
-  // ..
+    // ..
   }
 }

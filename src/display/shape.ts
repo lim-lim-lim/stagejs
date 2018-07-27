@@ -1,8 +1,15 @@
 import Display from './display';
 import Graphics from './graphics';
+import Rectangle from 'geom/rectangle';
 
 export default class Shape extends Display {
   public graphics: Graphics = null;
+
+  public get bounds(): Rectangle {
+    const bounds: Rectangle = this.graphics.bounds.clone();
+    bounds.setTo(this.x, this.y, bounds.width * this.scaleX, bounds.height * this.scaleY);
+    return bounds;
+  }
 
   constructor(graphics: Graphics) {
     super();

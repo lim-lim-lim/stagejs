@@ -57,18 +57,14 @@ export default class Graphics {
   public get bounds(): Rectangle { return this._bounds; }
 
   public rect(x: number, y: number, width: number, height: number): void {
-    this._bounds.extends(new Rectangle(x, y, width, height));
     this._addCommand(DrawCommandName.RECT, arguments);
   }
 
   public fillRect(x: number, y: number, width: number, height: number): void {
-    this._bounds.extends(new Rectangle(x, y, width, height));
     this._addCommand(DrawCommandName.FILL_RECT, arguments);
   }
 
   public strokeRect(x: number, y: number, width: number, height: number): void {
-    const lineWidth: number = this.lineWidth * 2;
-    this._bounds.extends(new Rectangle(x, y, width + lineWidth, height + lineWidth));
     this._addCommand(DrawCommandName.STROKE_RECT, arguments);
   }
 
@@ -85,16 +81,10 @@ export default class Graphics {
   }
 
   public moveTo(x: number, y: number): void {
-    this._x = x;
-    this._y = y;
     this._addCommand(DrawCommandName.MOVE_TO, arguments);
   }
 
   public lineTo(x: number, y: number): void {
-    this._bounds.extendsPosition(this._x, this._y);
-    this._bounds.extendsPosition(x, y);
-    this._x = x;
-    this._y = y;
     this._addCommand(DrawCommandName.LINE_TO, arguments);
   }
 
@@ -137,5 +127,34 @@ export default class Graphics {
       lineJoin: this.lineJoin,
       miterLimit: this.miterLimit,
     });
+    if (args) {
+      this._updateBounds(name, ...args);
+    } else {
+      this._updateBounds(name);
+    }
+  }
+
+  private _updateBounds(type: DrawCommandName, ...args: any[]): void {
+    switch (type) {
+      case DrawCommandName.RECT:
+      case DrawCommandName.FILL_RECT:
+        this._bounds.extends(new Rectangle(...args));
+        break;
+      case DrawCommandName.STROKE_RECT:
+        const lineWidth: number = this.lineWidth * 2;
+        this._bounds.extends(new Rectangle(args[0], args[1], args[2] + lineWidth, args[3] + lineWidth));
+        break;
+      case DrawCommandName.MOVE_TO:
+        this._x = args[0];
+        this._y = args[1];
+        break;
+      case DrawCommandName.LINE_TO:
+        this._bounds.extendsPosition(this._x, this._y);
+        this._bounds.extendsPosition(args[0], args[1]);
+        this._x = args[0];
+        this._y = args[1];
+        break;
+    }
+
   }
 }
