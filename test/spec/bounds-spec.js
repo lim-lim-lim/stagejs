@@ -26,53 +26,65 @@ describe('[ Bounds Test ]', () => {
     });
   });
 
-  describe( 'Shape Bounds', ()=>{
-    it('FillRect Bounds 1', () => {
-      const g = new stg.Graphics();
-      const s = new stg.Shape(g);
-      g.fillRect( 0, 0, 100, 100 );
-      s.x = 100; 
-      s.y = 100;
-      expect(s.bounds).toEqualRectangle(100, 100, 100, 100);
+  describe( 'Shape Bounds : ', ()=>{
+    describe( 'Shape의 bounds는 Graphics객체의 bounds를 포함한다.', ()=>{
+      it('FillRect Bounds 1', () => {
+        const g = new stg.Graphics();
+        const s = new stg.Shape(g);
+        g.fillRect( 0, 0, 100, 100 );
+        s.x = 100; 
+        s.y = 100;
+        expect(s.bounds).toEqualRectangle(100, 100, 100, 100);
+      });
+  
+      it('FillRect Bounds 2', () => {
+        const g = new stg.Graphics();
+        const s = new stg.Shape(g);
+        g.fillRect( 0, 0, 100, 100 );
+        g.fillRect( 100, 100, 100, 100 );
+        s.x = 100; 
+        s.y = 100;
+        expect(s.bounds).toEqualRectangle(100, 100, 200, 200);
+      });
+  
+      it('StrokeRect Bounds lineWidth:0', () => {
+        const g = new stg.Graphics();
+        const s = new stg.Shape(g);
+        g.strokeRect( 0, 0, 100, 100 );
+        s.x = 100; 
+        s.y = 100;
+        expect(s.bounds).toEqualRectangle(100, 100, 100, 100);
+      });
+  
+      it('StrokeRect Bounds lineWidth:10', () => {
+        const g = new stg.Graphics();
+        const s = new stg.Shape(g);
+        g.lineWidth = 10;
+        g.strokeRect( 0, 0, 100, 100 );
+        s.x = 100; 
+        s.y = 100;
+        expect(s.bounds).toEqualRectangle(100, 100, 120, 120);
+      });
+  
+      it('StrokeRect Bounds lineTo moveTo', () => {
+        const g = new stg.Graphics();
+        const s = new stg.Shape(g); 
+        g.lineWidth = 10;
+        g.strokeRect( 0, 0, 100, 100 );
+        s.x = 100; 
+        s.y = 100;
+        expect(s.bounds).toEqualRectangle(100, 100, 120, 120);
+      });
     });
+  });
+  /*
+  describe( 'Display Container Bounds : ', ()=>{
+    describe( 'DisplayContainer의 bounds는 복수의 자식 영역을 포함한다. : ', ()=>{
 
-    it('FillRect Bounds 2', () => {
-      const g = new stg.Graphics();
-      const s = new stg.Shape(g);
-      g.fillRect( 0, 0, 100, 100 );
-      g.fillRect( 100, 100, 100, 100 );
-      s.x = 100; 
-      s.y = 100;
-      expect(s.bounds).toEqualRectangle(100, 100, 200, 200);
-    });
+      it( '자식이 Shape일 때 ', ()=>{
 
-    it('StrokeRect Bounds lineWidth:0', () => {
-      const g = new stg.Graphics();
-      const s = new stg.Shape(g);
-      g.strokeRect( 0, 0, 100, 100 );
-      s.x = 100; 
-      s.y = 100;
-      expect(s.bounds).toEqualRectangle(100, 100, 100, 100);
+      });
     });
-
-    it('StrokeRect Bounds lineWidth:10', () => {
-      const g = new stg.Graphics();
-      const s = new stg.Shape(g);
-      g.lineWidth = 10;
-      g.strokeRect( 0, 0, 100, 100 );
-      s.x = 100; 
-      s.y = 100;
-      expect(s.bounds).toEqualRectangle(100, 100, 120, 120);
-    });
-
-    it('StrokeRect Bounds lineTo moveTo', () => {
-      const g = new stg.Graphics();
-      const s = new stg.Shape(g); 
-      g.lineWidth = 10;
-      g.strokeRect( 0, 0, 100, 100 );
-      s.x = 100; 
-      s.y = 100;
-      expect(s.bounds).toEqualRectangle(100, 100, 120, 120);
-    });
-  })
+  });
+  */
 });

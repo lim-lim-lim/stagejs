@@ -51,12 +51,15 @@
 
 
     const graphics2 = new stg.Graphics();
-    graphics2.fillStyle = '#999';
-    graphics2.fillRect( 0, 0, 50, 50 );
+    graphics2.lineStyle = '#999';
+    graphics2.lineWidth = 10;
+    graphics2.strokeRect( 0, 0, 50, 50 );
     const shape3 = new stg.Shape(graphics2);    
     shape3.x = 0;
     shape3.y = 200;
     container.addChild(shape3);
+
+
 
     const boundsGraphics = new stg.Graphics();
     const bounds = container.bounds;

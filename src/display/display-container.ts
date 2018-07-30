@@ -28,7 +28,6 @@ export default class DisplayContainer extends Display {
     child.stage = this.stage;
     child.parent = this;
     this.stage.changed = true;
-    this._updateBounds();
     child.trigger(Stage.ADD_TO_STAGE);
   }
 
@@ -70,10 +69,9 @@ export default class DisplayContainer extends Display {
   }
 
   private _updateBounds(): void {
-    this.width = 0;
-    this.height = 0;
     const tempX: number = this.x;
     const tempY: number = this.y;
+    this._bounds.reset();
     for (const child of this._children) {
       this._bounds.extends(child.bounds);
     }
